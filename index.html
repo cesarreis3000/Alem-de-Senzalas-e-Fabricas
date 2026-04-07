@@ -3,746 +3,828 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Além de Senzalas e Fábricas | Apresentação Master CEFET-MG</title>
+    <title>Além de Senzalas e Fábricas | PPGET CEFET-MG</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           01. ROOT & VARIÁVEIS MASTER (THEME HARVARD / MUSEUM)
+           1. DESIGN SYSTEM & CSS VARIABLES
            ========================================================================== */
         :root {
-            /* Paleta CEFET & Acadêmica Profunda */
-            --navy-900: #030b14;
-            --navy-800: #0a192f;
-            --navy-600: #14325c;
-            --gold-primary: #C5A059;
-            --gold-light: #e6ce98;
-            --crimson-dark: #7a1515;
-            --crimson-light: #991b1b;
+            /* Cores Dark Mode Premium */
+            --bg-base: #000000;
+            --bg-surface: #0a0a0a;
+            --bg-elevated: #111111;
             
-            --paper-bg: #fdfcf8;
-            --paper-alt: #f0ebd8;
+            /* Sotaques (Accents) */
+            --accent-gold: #D4AF37;
+            --accent-gold-glow: rgba(212, 175, 55, 0.15);
+            --accent-blue: #0066cc;
+            --accent-crimson: #a31621;
             
-            --text-dark: #121212;
-            --text-gray: #475569;
-            --text-light: #f8fafc;
+            /* Tipografia */
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
             
-            --font-title: 'Cinzel', serif;
-            --font-body: 'Merriweather', serif;
-            --font-ui: 'Montserrat', sans-serif;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-serif: 'Playfair Display', serif;
             
-            --shadow-epic: 0 40px 100px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
-            --transition-epic: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-            --transition-fast: all 0.3s ease;
+            /* Efeitos */
+            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --shadow-float: 0 20px 40px rgba(0,0,0,0.8);
+            
+            /* Transições */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-slide: 1.2s;
         }
 
         /* ==========================================================================
-           02. RESET E BASE
+           2. RESET & GLOBAL STYLES
            ========================================================================== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
             width: 100vw; height: 100vh;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             overflow: hidden;
-            background-color: var(--navy-900);
-            color: var(--text-dark);
-            font-family: var(--font-body);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        ::selection { background: var(--accent-gold); color: #000; }
 
         /* ==========================================================================
-           03. MOTOR GRÁFICO (CANVAS BACKGROUND)
+           3. BACKGROUND EFFECTS (GLOWS)
            ========================================================================== */
-        #particle-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1; background: linear-gradient(135deg, var(--navy-900) 0%, #061121 100%);
-        }
-
-        .bg-vignette {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%);
-            z-index: 2; pointer-events: none;
-        }
-
-        /* ==========================================================================
-           04. HEADER INSTITUCIONAL CEFET-MG
-           ========================================================================== */
-        .top-header {
-            position: fixed; top: 0; left: 0; width: 100vw;
-            padding: 1.5rem 4rem;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100;
-            background: linear-gradient(180deg, rgba(3,11,20,0.95) 0%, transparent 100%);
-            font-family: var(--font-ui); color: var(--text-light);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.15);
+        .ambient-glow {
+            position: fixed; width: 60vw; height: 60vw;
+            background: radial-gradient(circle, var(--accent-gold-glow) 0%, transparent 60%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 0; pointer-events: none; filter: blur(80px);
+            animation: pulseGlow 8s infinite alternate;
         }
         
-        .header-logo { display: flex; align-items: center; gap: 15px; }
-        .header-logo .emblem {
-            width: 45px; height: 45px; background: var(--gold-primary);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--navy-900); font-weight: 900; font-size: 1.2rem; font-family: var(--font-title);
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
         }
-        .header-logo h1 { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 2px; }
-        .header-logo span { color: var(--gold-primary); font-weight: 700; }
-        .header-meta { font-size: 0.95rem; text-align: right; font-weight: 400; opacity: 0.9; letter-spacing: 1px; }
+
+        /* Gráfico de Partículas via Canvas */
+        #particle-network {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none; opacity: 0.4;
+        }
 
         /* ==========================================================================
-           05. CORE DA APRESENTAÇÃO (DECK & SLIDES)
+           4. NAVIGATION & HEADER
            ========================================================================== */
-        #presentation-wrapper {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            perspective: 2500px; z-index: 10;
-            transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        .top-nav {
+            position: fixed; top: 0; left: 0; width: 100vw;
+            padding: 2rem 4rem; display: flex; justify-content: space-between;
+            align-items: center; z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
 
-        body.mode-speaker #presentation-wrapper { width: 68vw; }
+        .nav-brand {
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .nav-brand-logo {
+            width: 40px; height: 40px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-gold), #8a6d1c);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-serif); font-weight: 700; color: #000; font-size: 1.2rem;
+        }
+        .nav-brand-text h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; margin: 0; }
+        .nav-brand-text p { font-size: 0.8rem; color: var(--text-secondary); margin: 0; text-transform: uppercase; letter-spacing: 2px;}
+
+        .nav-meta { text-align: right; font-size: 0.85rem; color: var(--text-secondary); }
+        .nav-meta strong { color: var(--text-primary); font-weight: 500; }
+
+        /* ==========================================================================
+           5. PRESENTATION ENGINE (SLIDES)
+           ========================================================================== */
+        .deck-container {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            perspective: 2000px; z-index: 10;
+        }
 
         .slide {
-            position: absolute;
-            width: 88%; max-width: 1550px; height: 84vh;
-            background: var(--paper-bg);
-            border-radius: 8px; padding: 4.5rem 6rem;
-            box-shadow: var(--shadow-epic);
-            display: flex; flex-direction: column; justify-content: center;
-            border-top: 12px solid var(--navy-800);
-            border-bottom: 12px solid var(--gold-primary);
-            
-            /* Estado Inicial (Traseira Direita) */
+            position: absolute; top: 50%; left: 50%;
+            width: 85vw; max-width: 1600px; height: 75vh;
+            transform: translate(-50%, -50%) translateZ(-800px) rotateX(10deg);
             opacity: 0; visibility: hidden;
-            transform: translateZ(-800px) rotateY(25deg) translateX(300px);
-            pointer-events: none; transition: var(--transition-epic);
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 4rem 5rem; display: flex; flex-direction: column; justify-content: center;
+            transition: opacity var(--duration-slide) var(--ease-out-expo),
+                        transform var(--duration-slide) var(--ease-out-expo),
+                        visibility var(--duration-slide);
+            box-shadow: var(--shadow-float); overflow: hidden;
         }
 
-        /* Textura de papel ultra-realista */
+        /* Linha de destaque superior no slide */
         .slide::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            pointer-events: none; border-radius: 8px; z-index: 0; mix-blend-mode: multiply;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            opacity: 0.5;
         }
 
-        .slide > * { position: relative; z-index: 1; }
-
+        /* Slide Ativo */
         .slide.active {
             opacity: 1; visibility: visible;
-            transform: translateZ(0) rotateY(0) translateX(0); pointer-events: all;
+            transform: translate(-50%, -50%) translateZ(0) rotateX(0deg);
+            pointer-events: auto; z-index: 20;
         }
 
+        /* Slide Passado (Sai para cima) */
         .slide.past {
             opacity: 0; visibility: hidden;
-            transform: translateZ(-800px) rotateY(-25deg) translateX(-300px);
+            transform: translate(-50%, -150%) translateZ(-400px) rotateX(-10deg);
         }
 
-        /* Efeito Cascata (Staggered Reveal) */
-        .slide.active h1 { animation: slideUp 0.8s 0.2s both cubic-bezier(0.22, 1, 0.36, 1); }
-        .slide.active h2 { animation: slideUp 0.8s 0.4s both cubic-bezier(0.22, 1, 0.36, 1); }
-        .slide.active .stagger-1 { animation: slideUp 0.8s 0.6s both cubic-bezier(0.22, 1, 0.36, 1); }
-        .slide.active .stagger-2 { animation: slideUp 0.8s 0.8s both cubic-bezier(0.22, 1, 0.36, 1); }
-        .slide.active .stagger-3 { animation: slideUp 0.8s 1.0s both cubic-bezier(0.22, 1, 0.36, 1); }
+        /* Slide Futuro (Vem de baixo) - Gerenciado pelo state padrão da class .slide */
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
+        /* ==========================================================================
+           6. TYPOGRAPHY & CONTENT LAYOUT
+           ========================================================================== */
+        .slide-tag {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            background: rgba(212, 175, 55, 0.1); color: var(--accent-gold);
+            font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 1.5rem; border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .slide h1 {
+            font-family: var(--font-serif); font-size: 4rem; font-weight: 400;
+            line-height: 1.1; margin-bottom: 1rem; color: var(--text-primary);
+        }
+
+        .slide h2 {
+            font-family: var(--font-sans); font-size: 1.8rem; font-weight: 300;
+            color: var(--text-secondary); margin-bottom: 3rem;
+        }
+
+        .slide p {
+            font-size: 1.25rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 300;
+        }
+
+        .slide ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .slide li { font-size: 1.25rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 0.8rem; font-weight: 300; padding-left: 10px;}
+        .slide li::marker { color: var(--accent-gold); }
+
+        .slide strong, .highlight { color: var(--text-primary); font-weight: 500; }
+        .highlight-gold { color: var(--accent-gold); font-weight: 500; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; height: 100%; }
+        .grid-2.uneven { grid-template-columns: 1.2fr 0.8fr; }
+
+        /* Blockquote Tech Style */
+        .tech-quote {
+            position: relative; padding: 2rem 3rem;
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            border-left: 2px solid var(--accent-gold); border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+        .tech-quote p { font-family: var(--font-serif); font-size: 1.6rem; font-style: italic; color: var(--text-primary); margin: 0; }
+        .tech-quote::before { content: '"'; position: absolute; top: -10px; left: 10px; font-family: var(--font-serif); font-size: 4rem; color: rgba(212, 175, 55, 0.2); line-height: 1; }
+
+        /* Badges de citação */
+        .cite-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-family: var(--font-sans); font-weight: 600;
+            background: #222; color: #888; padding: 2px 6px; border-radius: 4px;
+            vertical-align: super; margin-left: 4px; cursor: help; border: 1px solid #333;
+            transition: all 0.2s;
+        }
+        .cite-badge:hover { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+
+        /* ==========================================================================
+           7. SMART IMAGES (BIG TECH STYLE)
+           ========================================================================== */
+        .image-showcase {
+            position: relative; width: 100%; height: 450px;
+            border-radius: 16px; overflow: hidden;
+            background: #050505; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .image-showcase img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transform: scale(1.1);
+            transition: opacity 1s ease, transform 15s ease-out;
+        }
+
+        .slide.active .image-showcase img { transform: scale(1); }
+
+        .image-caption {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 1.5rem; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #fff; font-size: 0.9rem; font-weight: 500;
+            transform: translateY(20px); opacity: 0; transition: all 0.5s 0.5s ease;
+        }
+        .slide.active .image-caption { transform: translateY(0); opacity: 1; }
+
+        /* Componente de Fallback CSS */
+        .img-fallback {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: repeating-linear-gradient(45deg, #0a0a0a, #0a0a0a 10px, #111 10px, #111 20px);
+            color: var(--text-secondary); text-align: center; padding: 2rem;
+        }
+        .img-fallback svg { width: 40px; height: 40px; margin-bottom: 1rem; opacity: 0.5; }
+
+        /* ==========================================================================
+           8. INTERACTIVE MODULES (CANVAS & CARDS)
+           ========================================================================== */
+        /* Cards Informativos */
+        .info-cards-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .info-card {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            padding: 2.5rem; border-radius: 16px; transition: all 0.3s ease;
+        }
+        .info-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(212, 175, 55, 0.3); transform: translateY(-5px); }
+        .info-card h3 { font-family: var(--font-serif); font-size: 1.5rem; color: var(--text-primary); margin-bottom: 1rem; }
+        
+        /* Gráfico Canvas */
+        .chart-wrapper { width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); padding: 1rem; position: relative; }
+        
+        /* ==========================================================================
+           9. BOTTOM CONTROLS & PROGRESS
+           ========================================================================== */
+        .bottom-bar {
+            position: fixed; bottom: 0; left: 0; width: 100vw;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 4rem; z-index: 100;
+        }
+
+        .progress-track {
+            width: 300px; height: 2px; background: rgba(255,255,255,0.1);
+            position: relative; border-radius: 2px;
+        }
+        .progress-fill {
+            position: absolute; top: 0; left: 0; height: 100%; background: var(--accent-gold);
+            width: 0%; transition: width 0.5s ease; box-shadow: 0 0 10px var(--accent-gold);
+        }
+
+        .controls { display: flex; gap: 1rem; }
+        .btn-ctrl {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.2s; backdrop-filter: blur(10px);
+        }
+        .btn-ctrl:hover:not(:disabled) { background: var(--text-primary); color: #000; transform: scale(1.1); }
+        .btn-ctrl:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-text {
+            background: transparent; border: none; color: var(--text-secondary);
+            font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; padding: 0 1rem; transition: color 0.2s;
+        }
+        .btn-text:hover { color: var(--text-primary); }
+
+        /* ==========================================================================
+           10. PRESENTER NOTES (TELEPROMPTER)
+           ========================================================================== */
+        #teleprompter {
+            position: fixed; top: 0; right: -400px; width: 400px; height: 100vh;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-left: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+            display: flex; flex-direction: column; transition: right 0.5s var(--ease-out-expo);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+        }
+        body.presenter-mode #teleprompter { right: 0; }
+        body.presenter-mode .deck-container { width: calc(100vw - 400px); }
+
+        .tele-header { padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;}
+        .tele-header h3 { font-size: 1rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-gold); }
+        .tele-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        
+        .tele-body { padding: 2rem; overflow-y: auto; flex: 1; font-size: 1.1rem; line-height: 1.8; color: #ccc; }
+        .tele-body p { margin-bottom: 1.5rem; }
+        .tele-action { display: block; font-size: 0.85rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: 600;}
+
+        /* STAGGERED ANIMATIONS INTERNAS */
+        .slide.active .stagger { opacity: 0; animation: fadeUp 0.8s forwards var(--ease-out-expo); }
+        .slide.active .stagger:nth-child(1) { animation-delay: 0.2s; }
+        .slide.active .stagger:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .stagger:nth-child(3) { animation-delay: 0.4s; }
+        .slide.active .stagger:nth-child(4) { animation-delay: 0.5s; }
+        .slide.active .stagger:nth-child(5) { animation-delay: 0.6s; }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* ==========================================================================
-           06. TIPOGRAFIA E ELEMENTOS INTERNOS
-           ========================================================================== */
-        .slide h1 {
-            font-family: var(--font-title); font-size: 3.6rem; font-weight: 900;
-            color: var(--navy-800); margin-bottom: 0.5rem; line-height: 1.1;
-        }
-
-        .slide h2 {
-            font-family: var(--font-ui); font-size: 1.6rem; font-weight: 600;
-            color: var(--crimson-dark); text-transform: uppercase; letter-spacing: 4px;
-            margin-bottom: 2rem; border-bottom: 2px solid var(--gold-primary); padding-bottom: 1rem;
-        }
-
-        .slide p, .slide li { font-size: 1.45rem; line-height: 1.8; color: var(--text-gray); margin-bottom: 1.2rem; }
-        .slide ul { margin-left: 2.5rem; margin-bottom: 1.5rem; }
-        .slide strong { color: var(--navy-800); font-weight: 800; }
-
-        /* Tooltip de Citação Avançado */
-        .citation {
-            position: relative; display: inline-block;
-            font-family: var(--font-ui); font-size: 0.85rem; font-weight: 700;
-            background: var(--navy-800); color: var(--gold-light);
-            padding: 2px 8px; border-radius: 4px; vertical-align: super;
-            cursor: help; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: var(--transition-fast); margin-left: 5px;
-        }
-        .citation:hover { background: var(--gold-primary); color: var(--navy-900); }
-        
-        .block-quote {
-            background: linear-gradient(90deg, rgba(197, 160, 89, 0.15) 0%, transparent 100%);
-            border-left: 6px solid var(--gold-primary); padding: 2rem 3rem;
-            font-style: italic; font-size: 1.45rem; color: var(--navy-800);
-            margin: 2rem 0; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-radius: 0 8px 8px 0;
-        }
-
-        /* ==========================================================================
-           07. GALERIA HISTÓRICA E MAGNIFIER (ZOOM)
-           ========================================================================== */
-        .grid-half { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; height: 100%; align-items: center; }
-        
-        .historic-photo-frame {
-            position: relative; width: 100%; height: 50vh;
-            border-radius: 6px; box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            border: 8px solid #fff; border-bottom: 35px solid #fff; /* Estilo Polaroid/Arquivo */
-            background: #000; overflow: hidden;
-            cursor: crosshair;
-        }
-        
-        .historic-photo-frame img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: sepia(0.2) contrast(1.1) grayscale(0.2); transition: transform 0.2s ease-out;
-            transform-origin: center center;
-        }
-        
-        /* Legenda estilo placa de museu */
-        .photo-caption {
-            position: absolute; bottom: -35px; left: 0; width: 100%;
-            color: #333; text-align: center; font-family: var(--font-ui); font-size: 0.95rem; font-weight: 600;
-            line-height: 35px; letter-spacing: 1px;
-        }
-
-        /* Fallback Inteligente (Caso a imagem quebre) */
-        .museum-plaque {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: repeating-linear-gradient(45deg, var(--navy-900), var(--navy-900) 10px, var(--navy-800) 10px, var(--navy-800) 20px);
-            color: var(--gold-light); text-align: center; padding: 3rem;
-            border: 6px solid var(--gold-primary); z-index: 5;
-        }
-        .museum-plaque h3 { font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold-primary); }
-        .museum-plaque p { font-family: var(--font-ui); font-size: 1.1rem; color: #cbd5e1; }
-
-        /* Quadros Comparativos */
-        .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
-        .card { background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.06); position: relative; }
-        .card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; }
-        .card.red::before { background: var(--crimson-dark); }
-        .card.gold::before { background: var(--gold-primary); }
-        .card h3 { font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 1.5rem; }
-
-        /* ==========================================================================
-           08. DASHBOARD DO PALESTRANTE (TELEPROMPTER)
-           ========================================================================== */
-        #speaker-dashboard {
-            position: fixed; top: 0; right: -35vw; width: 35vw; height: 100vh;
-            background: #0b1121; border-left: 3px solid var(--gold-primary);
-            box-shadow: -20px 0 50px rgba(0,0,0,0.8); z-index: 500;
-            display: flex; flex-direction: column; transition: right 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        body.mode-speaker #speaker-dashboard { right: 0; }
-
-        .dash-header {
-            background: #02060d; padding: 2rem; border-bottom: 1px solid #1e293b;
-            display: flex; justify-content: space-between; align-items: center; color: var(--gold-primary);
-        }
-        
-        .dash-header h3 { font-family: var(--font-title); font-size: 1.4rem; letter-spacing: 1px; }
-        .dash-close { background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; line-height: 1; transition: 0.3s;}
-        .dash-close:hover { color: var(--crimson-dark); transform: rotate(90deg); }
-
-        .dash-info { background: #131e33; padding: 1rem 2rem; color: #94a3b8; font-family: var(--font-ui); font-size: 1rem; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; font-weight: 600;}
-
-        .dash-body {
-            padding: 3rem; overflow-y: auto; flex: 1; color: #e2e8f0;
-            font-family: var(--font-body); font-size: 1.3rem; line-height: 1.9;
-        }
-
-        .speaker-tag {
-            display: inline-block; background: var(--crimson-dark); color: white;
-            padding: 6px 16px; border-radius: 4px; font-weight: 800; font-size: 0.95rem;
-            margin-bottom: 1.5rem; letter-spacing: 2px; font-family: var(--font-ui); text-transform: uppercase;
-        }
-
-        .dash-body p { margin-bottom: 1.5rem; }
-        .dash-body strong { color: var(--gold-light); font-weight: 700; }
-        .dash-body .script-action { font-style: italic; color: #64748b; font-size: 1.1rem; display: block; margin-bottom: 1rem; border-left: 3px solid #64748b; padding-left: 15px;}
-
-        /* ==========================================================================
-           09. UI DE CONTROLE E PROGRESSO
-           ========================================================================== */
-        .controls-bar {
-            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 1rem; z-index: 1000;
-            background: rgba(3, 11, 20, 0.85); backdrop-filter: blur(20px);
-            padding: 12px 24px; border-radius: 50px; border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-
-        .btn {
-            background: transparent; color: var(--text-light); border: 1px solid rgba(255,255,255,0.2);
-            padding: 12px 24px; border-radius: 30px; font-family: var(--font-ui); font-size: 1rem;
-            font-weight: 600; cursor: pointer; transition: var(--transition-fast);
-        }
-
-        .btn:hover:not(:disabled) { background: var(--gold-primary); color: var(--navy-900); border-color: var(--gold-primary); transform: translateY(-3px); }
-        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        .progress-container { position: fixed; bottom: 0; left: 0; width: 100vw; height: 8px; background: rgba(255,255,255,0.05); z-index: 1000; }
-        .progress-bar { height: 100%; background: var(--gold-primary); width: 0%; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 0 15px var(--gold-primary); }
-
-        /* ==========================================================================
-           10. MOTOR DE IMPRESSÃO (Apostila/Handout A4)
+           11. PRINT / PDF ENGINE
            ========================================================================== */
         @media print {
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; transition: none !important; animation: none !important;}
-            @page { size: A4 landscape; margin: 15mm; }
-            body, html { background: #ffffff !important; height: auto !important; overflow: visible !important; color: #000 !important; }
-            #particle-canvas, .bg-vignette, .top-header, .controls-bar, .progress-container, #speaker-dashboard { display: none !important; }
-
-            #presentation-wrapper { position: relative !important; display: block !important; width: 100% !important; height: auto !important; transform: none !important; perspective: none !important; }
-
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; transition: none !important; animation: none !important; }
+            @page { size: A4 landscape; margin: 0; }
+            body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+            .ambient-glow, #particle-network, .top-nav, .bottom-bar, #teleprompter { display: none !important; }
+            
+            .deck-container { position: relative !important; display: block !important; width: 100% !important; height: auto !important; perspective: none !important; }
+            
             .slide {
-                position: relative !important; display: flex !important; width: 100% !important; height: 100vh !important; max-width: none !important;
-                margin: 0 !important; padding: 40px 60px !important; border: none !important; border-top: 15px solid #05101a !important;
-                border-bottom: 5px solid #C5A059 !important; box-shadow: none !important; opacity: 1 !important; visibility: visible !important; transform: none !important;
-                page-break-after: always !important; page-break-inside: avoid !important; background: #ffffff !important; border-radius: 0 !important;
+                position: relative !important; top: auto !important; left: auto !important; transform: none !important;
+                width: 100vw !important; height: 100vh !important; max-width: none !important;
+                background: #fff !important; color: #000 !important; border: none !important; border-radius: 0 !important;
+                box-shadow: none !important; opacity: 1 !important; visibility: visible !important;
+                page-break-after: always !important; border-top: 10px solid #000 !important; border-bottom: 4px solid #D4AF37 !important;
             }
             .slide::before { display: none !important; }
-            .slide h1 { color: #000 !important; font-size: 32pt !important; margin-bottom: 10px !important;}
-            .slide h2 { color: #555 !important; font-size: 18pt !important; border-bottom: 2px solid #ccc !important; margin-bottom: 20px !important;}
-            .slide p, .slide li { color: #111 !important; font-size: 15pt !important; line-height: 1.5 !important; }
             
-            .card { border: 2px solid #ddd !important; box-shadow: none !important; padding: 20px !important;}
-            .block-quote { border-left: 6px solid #000 !important; background: #f4f4f4 !important; color: #000 !important; }
-            .citation { border: 1px solid #000 !important; background: transparent !important; color: #000 !important; box-shadow: none !important;}
-            
-            .historic-photo-frame { border: 2px solid #000 !important; box-shadow: none !important; height: 500px !important; background: #fff !important; padding-bottom: 30px !important;}
-            .historic-photo-frame img { filter: grayscale(1) !important; object-fit: contain !important;}
-            .photo-caption { bottom: 0 !important; line-height: 30px !important; color: #000 !important; background: #eee !important; border-top: 1px solid #ccc !important;}
+            h1 { color: #000 !important; } h2, p, li { color: #333 !important; }
+            .tech-quote { background: #f5f5f5 !important; border-left-color: #000 !important; }
+            .tech-quote p { color: #000 !important; }
+            .info-card { border: 1px solid #ccc !important; }
+            .info-card h3 { color: #000 !important; }
+            .image-showcase { border: 1px solid #000 !important; box-shadow: none !important; }
+            .image-showcase img { opacity: 1 !important; transform: none !important; filter: grayscale(100%); }
+            .image-caption { transform: none !important; opacity: 1 !important; background: #eee !important; color: #000 !important; border-top: 1px solid #000 !important; }
+            .chart-wrapper { display: none !important; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
-    <div class="bg-vignette"></div>
+    <div class="ambient-glow"></div>
+    <canvas id="particle-network"></canvas>
 
-    <header class="top-header">
-        <div class="header-logo">
-            <div class="emblem">C</div>
-            <h1>CEFET-MG <span>| PPGET</span></h1>
+    <header class="top-nav">
+        <div class="nav-brand">
+            <div class="nav-brand-logo">PP</div>
+            <div class="nav-brand-text">
+                <h1>CEFET-MG</h1>
+                <p>Educação Tecnológica</p>
+            </div>
         </div>
-        <div class="header-meta">
-            <strong>História da Educação Profissional</strong><br>
-            Docentes: Dra. Irlen Gonçalves & Dra. Isis Castro
+        <div class="nav-meta">
+            <p><strong>História da Educação Profissional</strong></p>
+            <p>Professores: Dra. Irlen Gonçalves e Dra. Isis Castro</p>
         </div>
     </header>
 
-    <aside id="speaker-dashboard">
-        <div class="dash-header">
-            <h3>🎙️ Teleprompter Oficial</h3>
-            <button class="dash-close" onclick="toggleNotes()">×</button>
+    <aside id="teleprompter">
+        <div class="tele-header">
+            <h3>Notas do Palestrante</h3>
+            <button class="tele-close" onclick="toggleTeleprompter()">×</button>
         </div>
-        <div class="dash-info">
-            <span id="dash-slide-num">Slide 1 / X</span>
-            <span id="dash-time">Tempo: 00:00</span>
-        </div>
-        <div class="dash-body" id="notes-content"></div>
+        <div class="tele-body" id="tele-content">
+            </div>
     </aside>
 
-    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
+    <main class="deck-container">
 
-    <div class="controls-bar">
-        <button class="btn" onclick="toggleNotes()">📖 Abrir Teleprompter</button>
-        <button class="btn" onclick="triggerPrint()">🖨️ Gerar PDF / Apostila</button>
-        <button class="btn" id="btn-prev" onclick="navSlide(-1)">◀ Voltar</button>
-        <button class="btn" id="btn-next" onclick="navSlide(1)">Avançar ▶</button>
-    </div>
-
-    <main id="presentation-wrapper">
-
-        <div class="slide active" data-notes="<span class='speaker-tag'>EQUIPE - ABERTURA</span><span class='script-action'>(Aguarde todos se acomodarem e inicie com tom firme e acadêmico)</span><p>Bom dia/boa noite a todos. Professoras Irlen e Isis, colegas do PPGET.</p><p>Hoje nosso grupo tem a missão de apresentar e mediar uma das obras mais instigantes e revolucionárias da historiografia nacional: <strong>'Além de senzalas e fábricas'</strong>, dos professores Antonio Luigi Negro e Flávio Gomes.</p><p>Preparamos uma apresentação densa, recheada de registros documentais, que não apenas resume o texto, mas conecta a historiografia da escravidão com a fundação da nossa <strong>Educação Profissional</strong>. Vamos começar.</p>">
-            <div style="text-align: center; width: 100%;">
-                <h2 style="border: none; margin-bottom: 1rem;">Seminário de Leitura Obrigatória</h2>
-                <h1 style="font-size: 5.5rem; letter-spacing: -2px;">Além de Senzalas <br><span style="color: var(--gold-primary); font-size: 4rem;">&</span> Fábricas</h1>
-                <p style="font-size: 2.2rem; font-style: italic; color: var(--navy-600); margin-bottom: 4rem; font-weight: 400;">Uma história social do trabalho no Brasil</p>
-                
-                <p style="font-size: 1.5rem;"><strong>Autoria:</strong> Antonio Luigi Negro (UFBA) & Flávio Gomes (UFRJ) <span class="citation">cite: 1, 2</span></p>
-                <p style="font-size: 1.2rem; color: var(--text-gray); margin-top: 10px;">Tempo Social (Revista de Sociologia da USP), 2006.</p>
-                
-                <div style="margin-top: 5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2rem;">
-                    <p style="font-family: var(--font-ui); font-size: 1.1rem; color: var(--crimson-dark); font-weight: 800; letter-spacing: 3px; text-transform: uppercase;">Mestrandos Mediadores:</p>
-                    <p style="font-size: 1.4rem; margin-top: 1rem; font-weight: 600;">Bruno Fernandes M. de Oliveira • Cristine Gonçalves de Souza<br>Jean Cesar dos Reis Barbosa • Marina Evaristo dos Santos</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 1</span><span class='script-action'>(Mostre a imagem da quitandeira como exemplo do que era ignorado)</span><p>Os autores iniciam o texto com uma denúncia contundente: a academia brasileira construiu um <strong>hiato historiográfico</strong>.</p><p>De um lado, os historiadores da escravidão estudavam o negro apenas no meio rural, como vítima passiva da coerção.</p><p>Do outro lado, os historiadores do 'movimento operário' focavam nas fábricas e no imigrante europeu, tratando-os como os únicos fundadores da classe trabalhadora.</p><p>Olhem a foto na tela. Essa quitandeira negra, dona de intenso saber comercial urbano, era apagada da história oficial do trabalho. A tese central é: <strong>Esse diálogo precisa existir</strong>.</p>">
-            <h1 class="stagger-1">1. O Abismo Historiográfico</h1>
-            <h2 class="stagger-2">A urgência do diálogo na pesquisa brasileira</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <p>Os autores denunciam o <strong>inexistente diálogo</strong> entre duas esferas da História do Brasil: <span class="citation">cite: 6</span></p>
-                    <ul style="margin-top: 2rem;">
-                        <li><strong>Estudos da Escravidão:</strong> Restritos às experiências rurais, focados na coerção e no cativeiro passivo.</li>
-                        <li><strong>Estudos do Trabalho Livre:</strong> Focados nas fábricas de São Paulo, na imigração e no sindicalismo.</li>
-                    </ul>
-                    <div class="block-quote">
-                        "É hora de reaver a trama entre migrantes 'longe da modernidade' e aqueles que viveram o 'atraso' da escravidão." <span class="citation">cite: 26</span>
-                    </div>
-                </div>
-                
-                <div class="historic-photo-frame" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Trabalho de Ganho" data-fallback-desc="O trabalho autônomo urbano da população negra foi apagado da história operária clássica.">
-                    <img src="image_237cfb.jpg" alt="Mulher negra quitandeira vendendo produtos" onerror="handleImgError(this)">
-                    <div class="photo-caption">O intenso trabalho urbano: Quitandeiras negras apagadas da historiografia fabril.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 1</span><span class='script-action'>(Foque no navio de imigrantes para falar da Eugenia)</span><p>Para unir esses mundos, Negro e Gomes exigem o fim das dicotomias: 'Moderno vs. Arcaico'.</p><p>A historiografia antiga dizia que o escravo não servia para a indústria por 'atraso técnico'. Mas o texto diz: Ocorreu uma <strong>'modernização sem mudança'</strong>.</p><p>Vejam a imagem do desembarque no Porto de Santos. O negro não foi demitido por falta técnica; ele foi substituído por pura ideologia eugênica do Estado, que financiou a vinda desses imigrantes europeus para 'branquear' a civilização e o progresso nacional.</p>">
-            <h1 class="stagger-1">2. Demolindo Dicotomias</h1>
-            <h2 class="stagger-2">Modernização sem Mudança e a Ideologia Eugênica</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <p>A tese ataca as divisões binárias (moderno/arcaico, instruído/rude) por criarem uma <strong>hierarquia racial de protagonismo</strong>. <span class="citation">cite: 27, 28</span></p>
-                    
-                    <ul style="margin-top: 1.5rem;">
-                        <li>No polo "arcaico" (escravidão), pressupõe-se apenas o reinado da necessidade, sem sujeitos históricos com iniciativa política. <span class="citation">cite: 29</span></li>
-                        <li>No polo "moderno" (fábrica), o imigrante europeu é alçado a único detentor da consciência de classe. <span class="citation">cite: 30</span></li>
-                    </ul>
-                    
-                    <p style="margin-top: 2rem; font-weight: 700; color: var(--crimson-dark);">A substituição da mão de obra foi projeto do racismo científico europeu, e não uma demanda puramente tecnológica. <span class="citation">cite: 191, 192, 193</span></p>
-                </div>
-                
-                <div class="historic-photo-frame" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Projeto Imigrantista" data-fallback-desc="O desembarque subsidiado como política de branqueamento nacional.">
-                    <img src="image_237cc6.jpg" alt="Navio chegando com imigrantes europeus no porto" onerror="handleImgError(this)">
-                    <div class="photo-caption">Desembarque de imigrantes: A ideologia civilizatória substituindo o negro urbano.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 2</span><span class='script-action'>(Use a foto do time de futebol para explicar Hobsbawm)</span><p>Qual a base teórica para validar essa classe marginalizada? A história social britânica.</p><p>E. P. Thompson nos ensina que a 'classe' não é a carteira assinada. <strong>Classe é experiência vivida no cotidiano</strong>.</p><p>E Eric Hobsbawm nos ensina a olhar para os 'despolitizados'. Olhem essa foto clássica de um time de futebol ligado a fábricas e ferrovias. A elite achava que isso alienava o trabalhador. Negro e Hobsbawm provam o contrário: o futebol, o samba e o terreiro eram as <strong>carapaças culturais</strong>, espaços onde o negro e o operário exerciam sua união longe do chicote e do patrão.</p>">
-            <h1 class="stagger-1">3. O Alicerce Teórico Britânico</h1>
-            <h2 class="stagger-2">Thompson, Hobsbawm e as "Carapaças Culturais"</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <ul style="line-height: 2;">
-                        <li><strong style="color: var(--crimson-dark);">E. P. Thompson:</strong> O conceito de classe não é estático. A classe "faz-se" na experiência vivida, o que sustenta a tese de uma <em>luta de classes sem classes amadurecidas</em>. <span class="citation">cite: 81, 91</span></li>
-                        <br>
-                        <li><strong style="color: var(--crimson-dark);">Eric Hobsbawm:</strong> A história operária transcende os sindicatos. É vital focar nas massas e nos "despolitizados". <span class="citation">cite: 105, 106</span></li>
-                    </ul>
-                    
-                    <div class="block-quote" style="padding: 1.5rem;">
-                        Times de várzea, escolas de samba e festas não eram armadilhas patronais, mas <strong>"carapaças culturais"</strong> de proteção e sociabilidade autônoma. <span class="citation">cite: 122, 129, 131</span>
-                    </div>
-                </div>
-                
-                <div class="historic-photo-frame" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Sociabilidade Operária" data-fallback-desc="O esporte e o lazer como centros de formação da identidade de classe.">
-                    <img src="image_237ca6.jpg" alt="Time de futebol antigo operário com jogadores negros e brancos" onerror="handleImgError(this)">
-                    <div class="photo-caption">Futebol Operário: A sociabilidade como escudo cultural autônomo.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 3</span><span class='script-action'>(Use a imagem da multidão para mostrar o pânico institucional)</span><p>Como provar materialmente que essas teorias são reais no Brasil? Através do medo do Estado.</p><p>O texto cita o Século XIX: Homens negros peticionaram ao Conselho de D. Pedro II a aprovação de uma associação. O Império entrou em pânico.</p><p>Eles negaram o pedido e mandaram infiltrar espiões da polícia, com medo de que formassem uma 'classe separada'. Vejam a foto da multidão popular nas ruas: o Estado brasileiro, desde o Império, sempre tratou a organização subalterna não como direito, mas como ameaça de guerra civil.</p>">
-            <h1 class="stagger-1">4. A Materialidade do Conflito</h1>
-            <h2 class="stagger-2">O Pânico do Império e a Espionagem</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <p>O artigo demonstra que a agência e a "luta de classes" negra eram reconhecidas e temidas institucionalmente pelo Estado Imperial:</p>
-                    <ul style="margin-top: 2rem;">
-                        <li><strong>O Pedido Negado:</strong> "Homens de cor" pleitearam a aprovação dos estatutos de uma sociedade ao Conselho de Estado, recebendo severa negativa. <span class="citation">cite: 20</span></li>
-                        <li><strong>O Medo de Classe:</strong> Os conselheiros de Pedro II registraram enorme apreensão ante a possível formação de uma <em>"classe separada"</em> antagônica. <span class="citation">cite: 22</span></li>
-                        <li><strong>Infiltração Policial:</strong> O Imperador encomendou diretamente à polícia uma espionagem entre os peticionários. <span class="citation">cite: 23</span></li>
-                    </ul>
-                </div>
-                
-                <div class="historic-photo-frame" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Multidão e Temor Estatal" data-fallback-desc="O ajuntamento popular sempre foi visto como classe perigosa.">
-                    <img src="image_237c88.jpg" alt="Multidão imensa reunida em praça pública no final do século 19" onerror="handleImgError(this)">
-                    <div class="photo-caption">A aglomeração subalterna: Sempre classificada pela polícia como "classe perigosa".</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 3</span><span class='script-action'>(Destaque os rostos na greve: migrantes e imigrantes juntos)</span><p>Avançando para o Século XX, a República manteve a mesma repressão usando a polícia política (DEOPS e Aperj).</p><p>Essas duas imagens históricas mostram as grandes greves. Mas quem estava lá? Informes policiais de 1957 descrevem uma greve na Rayon Matarazzo liderada... por 'nortistas' (nordestinos). Isso destrói o mito de que o migrante rural era submisso.</p><p>Nas fichas policiais, eles anotavam os operários com termos da cultura popular: 'manhoso', dono de 'truques'. A malandragem fundida à militância para paralisar a capital do capital!</p>">
-            <h1 class="stagger-1">5. O Braço Armado da República</h1>
-            <h2 class="stagger-2">DEOPS, os "Nortistas" e a Militância Manhosa</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <p>O continuum de controle social do Império foi herdado e aprimorado na República contra o sindicalismo e o operário migrante:</p>
-                    <ul style="margin-top: 1.5rem;">
-                        <li><strong>O "Alarido" Migrante:</strong> Informes do DEOPS-SP (1957) suspeitavam de piquetes na Rayon Matarazzo "integrados na maioria por <strong>nortistas</strong>", contrariando o mito da apatia do migrante. <span class="citation">cite: 256</span></li>
-                        <li><strong>A Malandragem nas Fichas:</strong> Nos anos 40, a polícia política devassou células comunistas, fichando operários como <strong>"manhosos"</strong>, com <strong>"truques e disfarces"</strong>. <span class="citation">cite: 265, 266</span></li>
-                    </ul>
-                </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <div class="historic-photo-frame" style="height: 230px;" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Greve Paulistana" data-fallback-desc="Registro de manifestação de trabalhadores">
-                        <img src="image_237c49.png" alt="Greve com bandeiras negras na rua" onerror="handleImgError(this)">
-                    </div>
-                    <div class="historic-photo-frame" style="height: 230px;" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Greve Mista" data-fallback-desc="Trabalhadores diversos em protesto">
-                        <img src="image_237c67.jpg" alt="Rostos de operários diversos em frente à fábrica" onerror="handleImgError(this)">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 3</span><span class='script-action'>(Foque na faixa da foto e no rosto dos trabalhadores negros)</span><p>Com a CLT de Getúlio Vargas (O Estado Novo), o sindicato não podia atuar DENTRO da fábrica. Olhem a faixa nessa foto: 'O trabalhador também tem o seu lugar no Estado Novo'. Reparem que a linha de frente é formada por homens negros.</p><p>Como eles não podiam fazer protesto formal dentro da fábrica, eles criaram a 'Greve Branca'.</p><p>Era uma paralisia disfarçada, surpresa, no recinto de trabalho. Ninguém sabia quem era o líder. Uma tática de guerrilha intelectual que parava a produção sem dar brecha para a polícia bater.</p>">
-            <h1 class="stagger-1">6. A "Greve Branca" e o Estado Novo</h1>
-            <h2 class="stagger-2">Insubordinação Invisível no Chão de Fábrica</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <p>Como a estrutura da CLT desprotegia a organização dentro da firma, os operários forjaram novas táticas de conflito: a <strong>Greve Branca</strong>. <span class="citation">cite: 240, 241, 248</span></p>
-                    <ul style="margin-top: 1.5rem; line-height: 2;">
-                        <li><strong>Paralisia Disfarçada:</strong> Produzia letargia tática, sem um bloqueio declarado e formal. <span class="citation">cite: 245</span></li>
-                        <li><strong>Invisibilidade:</strong> Impossibilitava aos patrões e à polícia mapear líderes ou representações claras. <span class="citation">cite: 246</span></li>
-                        <li><strong>Agência e Surpresa:</strong> Uma resistência profunda, silenciosa, e atuante dentro da nova máquina corporativa estatal. <span class="citation">cite: 247</span></li>
-                    </ul>
-                </div>
-                
-                <div class="historic-photo-frame" onmousemove="magnify(event, this)" onmouseleave="resetMagnify(this)" data-fallback-title="Estado Novo" data-fallback-desc="Trabalhadores negros exigindo inserção e direitos na era Vargas.">
-                    <img src="image_199ee1.jpg" alt="Trabalhadores negros carregando faixa: O trabalhador tambem tem o seu lugar no estado novo" onerror="handleImgError(this)">
-                    <div class="photo-caption">A apropriação do espaço público: Trabalhadores negros no Estado Novo.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 4</span><span class='script-action'>(Conexão Direta com a Pós-Graduação PPGET)</span><p>Isso nos traz à nossa área: A Educação Profissional.</p><p>O senso comum diz que as Escolas Técnicas surgiram porque o Brasil era um país rural sem mecânicos ou técnicos capacitados.</p><p>O texto aniquila essa tese. Nas cidades, a população negra e liberta dominava os ofícios mais complexos do século XIX: carpintaria naval, mecânica, forja, alvenaria monumental.</p><p>A tecnologia e a educação pelo ofício ('saber-fazer') já existiam e eram monopólio dos negros antes de qualquer escola federal abrir as portas.</p>">
-            <h1 class="stagger-1">7. Educação Profissional em Foco</h1>
-            <h2 class="stagger-2">O Monopólio Negado do Saber-Fazer</h2>
-            <div class="stagger-3">
-                <p>O impacto historiográfico do artigo subverte as narrativas canônicas e eugênicas sobre o surgimento da Educação Tecnológica no Brasil:</p>
-                
-                <div class="block-quote">
-                    "O crescimento urbano tornaria mais complexas as relações sociais de trabalho... Destacam-se os setores de serviços com escravos ao ganho ou de aluguel, realizando ofícios diversos (alfaiates, barbeiros, marceneiros, pedreiros etc.)." <span class="citation">cite: 167, 173</span>
-                </div>
-                
-                <ul style="font-size: 1.5rem; line-height: 2; margin-top: 3rem;">
-                    <li>Ao contrário do mito da inépcia técnica justificada pela escravidão, eram os trabalhadores negros que detinham a <strong>alta tecnologia mecânica e manual</strong> nas cidades (Rio, Salvador, Recife).</li>
-                    <li>As redes de ruas e irmandades eram as verdadeiras, e sofisticadas, instituições originais de <strong>transmissão do saber profissional</strong> no Brasil. <span class="citation">cite: 172, 175</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>MEDIADOR 4</span><span class='script-action'>(A exclusão técnica e institucional)</span><p>Se o negro dominava a técnica, por que o Estado criou as Escolas de Aprendizes Artífices focadas em 'desvalidos', mas criminalizou os antigos mestres?</p><p>Porque com a imigração, a lei mudou. Quem não tivesse 'ocupação formal' (nos moldes da ideologia europeia branca) virava 'vadio' e ia preso.</p><p>A nossa educação profissional nasce dessa fratura: ela surge como medida de controle disciplinar, criminalizando a população que de fato dominava as infraestruturas técnicas do país.</p>">
-            <h1 class="stagger-1">8. A Expropriação do Ofício</h1>
-            <h2 class="stagger-2">O Estigma da Vadiagem e as Escolas de Artífices</h2>
-            <div class="grid-half stagger-3">
-                <div>
-                    <ul style="line-height: 2.2;">
-                        <li><strong>A Mentira de Estado:</strong> O argumento de "atraso técnico" do negro para justificar a imigração europeia não possuía lastro empírico na realidade urbana. <span class="citation">cite: 204</span></li>
-                        <li><strong>Higienização e Controle:</strong> A ideologia do "trabalho livre" exigiu a limpeza das ruas e o enquadramento moral rigoroso da mão de obra nativa. <span class="citation">cite: 205</span></li>
-                        <li><strong style="color: var(--crimson-dark);">O Paradoxo da Vadiagem:</strong> Indivíduos sem "ocupação formal" nos padrões europeus foram atirados ao Código Penal como <strong>vadios</strong>. A escola técnica estatal nasce, nesse contexto, muito mais para policiar "desvalidos" do que para suprir carências tecnológicas reais. <span class="citation">cite: 206</span></li>
-                    </ul>
-                </div>
-                
-                <div class="card" style="background: var(--navy-800); color: white; border-top: none; border-left: 8px solid var(--crimson-dark);">
-                    <h3 style="color: var(--gold-primary); font-family: var(--font-title); font-size: 1.6rem; margin-bottom: 1rem;">Uma Educação Excludente</h3>
-                    <p style="color: #ccc; font-size: 1.2rem; margin-bottom: 0;">O projeto de ensino profissional do início da República consolidou a exclusão daqueles que, paradoxalmente, mais dominavam as ferramentas de transformação material do Brasil colônia e império.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-notes="<span class='speaker-tag'>GRUPO TODO</span><span class='script-action'>(Leitura instigante e chamada das professoras Irlen e Isis para o debate)</span><p>Para concluir, a emancipação dos operários é obra da própria classe, e começou com as greves de negros em Salvador e na resistência cultural.</p><p>Passamos três questões para a turma debatermos juntos:</p><p>1. Como nós, no CEFET, desenterramos esses saberes apagados (ex: a Greve de 1857)?</p><p>2. A fábrica Willys temia que a escola e o chão de fábrica produzissem a greve. Nós formamos pessoas críticas ou máquinas de obedecer?</p><p>3. E a 'greve branca' na sala de aula? Como enxergamos a insubordinação invisível dos nossos alunos hoje?</p><p>Obrigado! A palavra é de vocês!</p>">
-            <h1 class="stagger-1">9. Eixos para o Debate</h1>
-            <h2 class="stagger-2">Provocações à Turma e Docentes do PPGET</h2>
+        <article class="slide active" data-notes="<span class='tele-action'>Abertura - Grupo Inteiro</span><p>Bom dia/boa noite a todos. Professores e colegas.</p><p>Hoje nosso grupo assume a responsabilidade de mediar um dos textos mais emblemáticos da historiografia nacional: <strong>'Além de senzalas e fábricas'</strong>, dos professores Antonio Luigi Negro e Flávio Gomes.</p><p>Nós construímos esta plataforma interativa para desconstruirmos juntos o mito de que a classe trabalhadora brasileira e a educação profissional nasceram apenas com a fábrica paulista e o europeu. Vamos começar.</p>">
+            <span class="slide-tag stagger">Seminário Historiográfico</span>
+            <h1 class="stagger">Além de Senzalas e Fábricas</h1>
+            <h2 class="stagger">Uma história social do trabalho no Brasil</h2>
             
-            <div class="stagger-3" style="background: rgba(255,255,255,0.85); padding: 3rem 4rem; border-radius: 12px; margin-top: 3rem; border-left: 12px solid var(--crimson-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                <ol style="margin-left: 2.5rem; font-size: 1.55rem; line-height: 2.4; color: var(--navy-900); font-weight: 500;">
-                    <li><strong style="color: var(--crimson-dark);">O Apagamento Tecnológico:</strong> Como nossas pesquisas no CEFET podem resgatar a sofisticação técnica e sindical pregressa (ex: Greve dos Carregadores Baianos, 1857), contrapondo-se ao "mito fundacional eurocêntrico" nos livros didáticos? <span class="citation">cite: 213</span></li>
+            <div class="stagger" style="margin-top: 2rem;">
+                <p><strong>Autores da Obra:</strong> Antonio Luigi Negro (UFBA) & Flávio Gomes (UFRJ) <span class="cite-badge" title="Referência original do artigo">Ref</span></p>
+                <p style="color: var(--text-tertiary); font-size: 1rem;">Publicado em: Tempo Social - Revista de Sociologia da USP, 2006.</p>
+            </div>
+
+            <div class="stagger" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p style="text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; color: var(--accent-gold); margin-bottom: 0.5rem; font-weight: 600;">Mestrandos Mediadores</p>
+                <p style="font-size: 1.2rem; font-weight: 300;">Bruno Oliveira • Cristine Souza • Jean Barbosa • Marina Santos</p>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 1</span><p>Os autores iniciam o texto denunciando um problema estrutural na nossa academia: a criação de um <strong>hiato historiográfico</strong>.</p><p>De um lado, os historiadores pesquisavam a escravidão (sempre ligada ao campo, ao negro e à passividade).</p><p>Do outro lado, os historiadores olhavam para o 'trabalho livre', focando nas fábricas de São Paulo e no imigrante branco.</p><p>A tese central da obra é que esse diálogo precisa existir, pois a classe trabalhadora não surgiu magicamente com a imigração.</p>">
+            <div class="grid-2 uneven">
+                <div>
+                    <span class="slide-tag stagger">O Problema Metodológico</span>
+                    <h1 class="stagger">O Abismo Acadêmico</h1>
+                    <h2 class="stagger">A fragmentação da história do trabalho</h2>
                     
-                    <li style="margin-top: 1.5rem;"><strong style="color: var(--crimson-dark);">A Máquina Disciplinar:</strong> A gerência da Willys-Overland temia que a <em>"máquina de trabalho"</em> produzisse greves <span class="citation">cite: 230</span>. O sistema educacional tecnológico atual prioriza a docilidade gerencial ou emancipa sujeitos políticos?</li>
+                    <p class="stagger">O texto denuncia um <strong>"inexistente diálogo"</strong> histórico entre duas esferas de pesquisa: <span class="cite-badge" title="Pág 217">p.217</span></p>
                     
-                    <li style="margin-top: 1.5rem;"><strong style="color: var(--crimson-dark);">A Insubordinação Cotidiana:</strong> O conceito de "greve branca" (resistência tática, discreta e letárgica) encontra paralelos nas formas como os estudantes resistem e boicotam as engrenagens disciplinares na escola hoje? <span class="citation">cite: 247, 248</span></li>
+                    <ul class="stagger">
+                        <li><strong>Estudos da Escravidão:</strong> Focados quase que exclusivamente na experiência rural, na coerção violenta e na ausência de agência.</li>
+                        <li><strong>Estudos do Trabalho Livre:</strong> Restritos à indústria do Sudeste (São Paulo) e na imigração europeia.</li>
+                    </ul>
+
+                    <div class="tech-quote stagger">
+                        <p>É hora de reaver a trama entre migrantes 'longe da modernidade' e aqueles que viveram o 'atraso' da escravidão.</p>
+                    </div>
+                </div>
+                
+                <div class="stagger">
+                    <div class="image-showcase">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Marc_Ferrez_-_Quitandeiras%2C_Rio_de_Janeiro%2C_Brasil.jpg" alt="Quitandeiras" referrerpolicy="no-referrer" crossorigin="anonymous" onload="this.style.opacity=1" onerror="showImageFallback(this, 'Fotografia Histórica', 'O trabalho negro urbano invisibilizado (Marc Ferrez).')">
+                        <div class="image-caption">Marc Ferrez: O trabalho negro urbano ignorado pela historiografia clássica.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 1</span><p>Para conectar essas histórias, Negro e Gomes exigem a demolição das dicotomias: moderno versus arcaico.</p><p>A sociologia clássica atribuía ao negro apenas a 'necessidade biológica', e ao imigrante o 'protagonismo'.</p><p>Mas o texto prova que o projeto de substituição da mão de obra foi uma <strong>Modernização Sem Mudança</strong>. Não foi falta de técnica do trabalhador negro, foi um projeto eugênico de racismo científico financiado pelo Estado.</p>">
+            <div class="grid-2">
+                <div>
+                    <span class="slide-tag stagger">O Falso Protagonismo</span>
+                    <h1 class="stagger">Demolindo Dicotomias</h1>
+                    <h2 class="stagger">Modernização sem Mudança</h2>
+                    
+                    <p class="stagger">As divisões binárias da academia (moderno/arcaico, instruído/rude) criaram uma hierarquia racial de protagonismo. <span class="cite-badge">p.218</span></p>
+                    
+                    <ul class="stagger">
+                        <li>Atribuiu-se ao trabalhador escravizado apenas o reinado da <strong>necessidade biológica</strong>.</li>
+                        <li>A substituição da mão de obra foi um <span class="highlight-gold">projeto eugênico de racismo científico</span>, e não uma demanda tecnológica natural. <span class="cite-badge">p.221</span></li>
+                    </ul>
+                </div>
+
+                <div class="stagger">
+                    <p style="text-align: center; font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;">O Projeto de Branqueamento</p>
+                    <div class="chart-wrapper">
+                        <canvas id="eugenia-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 2</span><p>Se o negro escravizado também era trabalhador, como fundamentar isso? Os autores recorrem ao historiador marxista E. P. Thompson.</p><p>Para Thompson, classe social não é uma categoria do IBGE. A classe 'faz-se' na experiência vivida e na cultura.</p><p>Isso sustenta a ideia de uma 'luta de classes sem classes industriais'. Ou seja, mesmo sem fábricas, as redes de ofício nas ruas já travavam uma intensa guerra por autonomia.</p>">
+            <div class="grid-2 uneven">
+                <div>
+                    <span class="slide-tag stagger">Referencial Teórico I</span>
+                    <h1 class="stagger">A Experiência Viva</h1>
+                    <h2 class="stagger">E. P. Thompson e a Luta de Classes</h2>
+                    
+                    <p class="stagger">A matriz marxista britânica é mobilizada para validar a agência subalterna no Brasil oitocentista:</p>
+                    
+                    <div class="info-cards-container stagger">
+                        <div class="info-card">
+                            <h3>Classe como Experiência</h3>
+                            <p style="font-size: 1rem; margin:0;">A classe não pode ser "retirada pronta da geladeira". Ela é construída historicamente através do cotidiano e do conflito.</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>Lutas no Império</h3>
+                            <p style="font-size: 1rem; margin:0;">Valida-se a tese de uma <strong>luta de classes sem classes industriais maduras</strong> nas ruas coloniais e imperiais.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stagger">
+                    <div class="image-showcase">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Marcenaria.jpg/1024px-Marcenaria.jpg" alt="Marcenaria" referrerpolicy="no-referrer" crossorigin="anonymous" onload="this.style.opacity=1" onerror="showImageFallback(this, 'Documento Iconográfico', 'O saber técnico nas redes urbanas de ofício.')">
+                        <div class="image-caption">O saber técnico nas redes urbanas de ofício.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 2</span><p>O segundo referencial é Eric Hobsbawm. Ele alerta a academia: parem de olhar só para os líderes do sindicato.</p><p>Precisamos olhar para o operário comum. O trabalhador que jogava futebol de várzea, que ia ao terreiro ou ao samba.</p><p>Isso não era alienação do patrão. O texto define o lazer como 'carapaças culturais': escudos invisíveis de sociabilidade onde o trabalhador protegia sua saúde mental e sua rede de apoio.</p>">
+            <div class="grid-2">
+                <div>
+                    <span class="slide-tag stagger">Referencial Teórico II</span>
+                    <h1 class="stagger">As Carapaças Culturais</h1>
+                    <h2 class="stagger">Eric Hobsbawm e os "Despolitizados"</h2>
+                    
+                    <p class="stagger">Hobsbawm rompe com a visão puramente institucional (sindical/partidária) da formação da classe:</p>
+
+                    <ul class="stagger">
+                        <li>É metodologicamente vital investigar as massas e os <strong>"despolitizados"</strong>. <span class="cite-badge">p.220</span></li>
+                        <li>Times de futebol de fábrica, escolas de samba e festas religiosas <span class="highlight-gold">não eram armadilhas patronais</span>.</li>
+                    </ul>
+
+                    <div class="tech-quote stagger">
+                        <p>A cultura popular atua como uma 'carapaça cultural', garantindo autonomia perante a hegemonia dominante.</p>
+                    </div>
+                </div>
+
+                <div class="stagger">
+                    <div class="image-showcase">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Bangu_AC_1904.jpg" alt="Futebol Operário" referrerpolicy="no-referrer" crossorigin="anonymous" onload="this.style.opacity=1" onerror="showImageFallback(this, 'Registro Esportivo', 'A sociabilidade como escudo cultural de classe.')">
+                        <div class="image-caption">Futebol Operário (Bangu, 1904): A sociabilidade como escudo da classe.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 3</span><p>Como o texto prova isso na prática? Através da repressão do Estado.</p><p>No Império, a simples tentativa de 'homens de cor' aprovarem um estatuto civil gerou pânico. Dom Pedro II mandou infiltrar espiões, com medo de uma classe antagônica.</p><p>Na República, a polícia política (DEOPS) investigava operários migrantes e os fichava com termos de rua: 'manhosos' e cheios de 'truques'. A astúcia virou arma política, e o Estado sempre os tratou como 'classe perigosa'.</p>">
+            <span class="slide-tag stagger">Documentação e Fontes</span>
+            <h1 class="stagger">O Medo Institucional</h1>
+            <h2 class="stagger">O Braço Armado do Estado e a "Classe Perigosa"</h2>
+
+            <div class="info-cards-container stagger" style="margin-top: 3rem;">
+                <div class="info-card">
+                    <h3 style="color: var(--accent-crimson);">O Pânico do Império</h3>
+                    <p style="font-size: 1.15rem; margin-bottom: 1rem;">O Conselho de Estado negou associação a "homens de cor" e ordenou <strong>infiltração policial (espionagem)</strong>, temendo a formação de uma classe separada. <span class="cite-badge">p.218</span></p>
+                </div>
+                <div class="info-card">
+                    <h3 style="color: var(--accent-blue);">As Fichas da República</h3>
+                    <p style="font-size: 1.15rem; margin-bottom: 1rem;">O DEOPS fichava grevistas "nortistas" e classificava operários comunistas utilizando os termos das ruas: <strong>"manhoso"</strong> e com <strong>"truques e disfarces"</strong>. <span class="cite-badge">p.224</span></p>
+                </div>
+            </div>
+            
+            <p class="stagger" style="text-align: center; margin-top: 3rem; font-size: 1.3rem;">O trabalhador sempre frequentou a agenda policial classificado como <span class="highlight-gold">ameaça estrutural</span> à ordem estabelecida.</p>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 3</span><p>Outro conceito fabuloso é a Greve Branca.</p><p>Na Era Vargas, a CLT deixou o local de trabalho descoberto de direitos sindicais. Como o operário reagiu? Com tática de guerrilha intelectual.</p><p>A greve branca era uma paralisia disfarçada, no próprio chão de fábrica. Ninguém sabia quem era o líder, e a polícia não tinha a quem prender de imediato. A insubordinação invisível.</p>">
+            <div class="grid-2 uneven">
+                <div>
+                    <span class="slide-tag stagger">Táticas de Resistência</span>
+                    <h1 class="stagger">A "Greve Branca"</h1>
+                    <h2 class="stagger">Insubordinação no Chão de Fábrica</h2>
+                    
+                    <p class="stagger">A CLT de Vargas proibiu o aparato sindical dentro das empresas. A resposta dos trabalhadores foi genial: <span class="cite-badge">p.223</span></p>
+                    
+                    <ul class="stagger">
+                        <li><strong>Paralisia Disfarçada:</strong> Letargia tática da produção sem um bloqueio declarado publicamente.</li>
+                        <li><strong>Invisibilidade:</strong> Impossibilitava à gerência e à polícia mapear as lideranças do movimento.</li>
+                        <li><strong>Tática de Guerrilha:</strong> Resistência executada no próprio recinto fabril para burlar a violenta repressão direta nas ruas.</li>
+                    </ul>
+                </div>
+                <div class="stagger">
+                    <div class="image-showcase">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Oper%C3%A1rios_da_F%C3%A1brica_de_Tecidos_Bangu%2C_1890.jpg" alt="Fábrica Bangu" referrerpolicy="no-referrer" crossorigin="anonymous" onload="this.style.opacity=1" onerror="showImageFallback(this, 'Ambiente Fabril', 'O panóptico desafiado pela greve branca.')">
+                        <div class="image-caption">Fábrica de Tecidos (1890): O panóptico patronal desafiado.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Mediador 4 (Atenção: Foco no PPGET)</span><p>Tudo isso nos traz ao coração do nosso mestrado.</p><p>A história oficial diz que o ensino técnico nasceu no Brasil para resolver a falta de operários qualificados. Isso é mentira.</p><p>Os negros e libertos dominavam a alta tecnologia urbana (marcenaria naval, forja, alvenaria monumental). A escola técnica estatal nasceu como um projeto de profilaxia social: para policiar os chamados 'desvalidos', enquanto o Estado criminalizava os verdadeiros mestres de ofício através da lei da Vadiagem.</p>">
+            <div class="grid-2">
+                <div>
+                    <span class="slide-tag stagger">Conexão PPGET / Disciplina</span>
+                    <h1 class="stagger">A Expropriação do Saber</h1>
+                    <h2 class="stagger">A Gênese da Educação Tecnológica</h2>
+                    
+                    <p class="stagger">O artigo subverte o mito fundacional do ensino técnico no Brasil:</p>
+                    
+                    <ul class="stagger">
+                        <li><strong>O Monopólio Tecnológico:</strong> Eram os trabalhadores negros e libertos que detinham a <span class="highlight-gold">alta tecnologia do saber manual</span> (ofícios urbanos complexos).</li>
+                        <li><strong>Profilaxia Social:</strong> As primeiras Escolas de Aprendizes Artífices (1909) surgem como projeto higienista para disciplinar "desvalidos".</li>
+                        <li>Aos verdadeiros mestres de ofício restou o Código Penal, criminalizados sob o estigma de <strong>vadios</strong>. <span class="cite-badge">p.221</span></li>
+                    </ul>
+                </div>
+                
+                <div class="stagger" style="padding: 3rem; background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 1rem;">O Ensino Excludente</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6; color: var(--text-secondary);">O projeto republicano de ensino profissional consolidou a exclusão sistemática daqueles que, paradoxalmente, construíram e dominaram a infraestrutura material do país durante séculos.</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="slide" data-notes="<span class='tele-action'>Conclusão - Grupo</span><p>Finalizamos lembrando a frase de abertura dos autores: 'Que o número de nossos membros seja ilimitado'. A emancipação dos trabalhadores é obra deles mesmos.</p><p>Abrimos agora nossas três provocações para o debate com a turma e as professoras Irlen e Isis:</p><p>1. Como o CEFET pode resgatar esses saberes apagados nos currículos atuais?<br>2. A escola de hoje emancipa ou forma a submissão para não atrapalhar a máquina de trabalho?<br>3. E a 'greve branca' do aluno moderno? A indisciplina velada nas nossas salas de aula.</p><p>Muito obrigado.</p>">
+            <span class="slide-tag stagger">Debate Aberto</span>
+            <h1 class="stagger">Provocações à Banca</h1>
+            <h2 class="stagger">Reflexões para a Educação Profissional Hoje</h2>
+
+            <div class="stagger" style="margin-top: 3rem; padding: 3rem 4rem; background: var(--text-primary); color: var(--bg-base); border-radius: 16px; border-left: 8px solid var(--accent-gold); box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                <ol style="margin-left: 1.5rem; font-size: 1.4rem; line-height: 2; font-family: var(--font-sans); font-weight: 500;">
+                    <li style="margin-bottom: 1.5rem;"><strong>O Apagamento Tecnológico:</strong> Como resgatar os saberes técnicos e a agência subalterna pregressa (ex: Greve de 1857) nos currículos dos Institutos Federais e CEFETs?</li>
+                    
+                    <li style="margin-bottom: 1.5rem;"><strong>A Máquina Disciplinar:</strong> O sistema de educação profissional contemporâneo emancipa sujeitos políticos ou visa o aprimoramento da docilidade gerencial exigida pelo mercado?</li>
+                    
+                    <li><strong>A Insubordinação Cotidiana:</strong> Como o brilhante conceito operário de "greve branca" encontra paralelos nas dinâmicas de resistência silenciosa dos estudantes nas salas de aula da Rede Federal?</li>
                 </ol>
             </div>
-        </div>
+        </article>
 
     </main>
 
+    <footer class="bottom-bar">
+        <div class="controls">
+            <button class="btn-ctrl" onclick="navDeck(-1)" title="Anterior (Seta Esquerda)">←</button>
+            <button class="btn-ctrl" onclick="navDeck(1)" title="Próximo (Seta Direita)">→</button>
+            <button class="btn-text" onclick="toggleTeleprompter()">Notas do Palestrante</button>
+            <button class="btn-text" onclick="window.print()">Exportar PDF</button>
+        </div>
+        
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-bar"></div>
+        </div>
+        
+        <div style="font-family: var(--font-sans); font-size: 0.9rem; color: var(--text-tertiary);" id="slide-counter">
+            1 / 9
+        </div>
+    </footer>
+
     <script>
-        // --- 1. CORE SYSTEM (SLIDES E NOTAS) ---
-        let currentSlide = 0;
+        // --- 1. CORE PRESENTATION LOGIC ---
+        let currentIndex = 0;
         const slides = document.querySelectorAll('.slide');
-        const progressBar = document.getElementById('progress');
-        const notesContent = document.getElementById('notes-content');
-        const slideNumIndicator = document.getElementById('dash-slide-num');
-        const body = document.body;
+        const progressBar = document.getElementById('progress-bar');
+        const slideCounter = document.getElementById('slide-counter');
+        const teleContent = document.getElementById('tele-content');
 
         function updateDeck() {
             slides.forEach((slide, index) => {
                 slide.classList.remove('active', 'past');
-                if (index === currentSlide) {
+                if (index === currentIndex) {
                     slide.classList.add('active');
-                    notesContent.innerHTML = slide.getAttribute('data-notes') || "<p><em>[Sem Guião formatado]</em></p>";
-                    slideNumIndicator.innerText = `Slide ${index + 1} de ${slides.length}`;
-                } else if (index < currentSlide) {
+                    // Injeta as notas no teleprompter
+                    const notes = slide.getAttribute('data-notes');
+                    teleContent.innerHTML = notes ? notes : '<p><em>Nenhuma nota para este slide.</em></p>';
+                } else if (index < currentIndex) {
                     slide.classList.add('past');
                 }
             });
 
-            // Update Progress Bar
-            const prog = (currentSlide / (slides.length - 1)) * 100;
-            progressBar.style.width = prog + '%';
+            // Atualiza UI inferiors
+            const progress = (currentIndex / (slides.length - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+            slideCounter.innerText = `${currentIndex + 1} / ${slides.length}`;
 
-            // Buttons State
-            document.getElementById('btn-prev').disabled = currentSlide === 0;
-            document.getElementById('btn-next').disabled = currentSlide === slides.length - 1;
+            // Gerencia Animação do Gráfico Canvas (Apenas no Slide 3)
+            if (currentIndex === 2) {
+                setTimeout(initChartAnimation, 600);
+            }
         }
 
-        function navSlide(dir) {
-            currentSlide += dir;
-            if (currentSlide < 0) currentSlide = 0;
-            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+        function navDeck(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= slides.length) currentIndex = slides.length - 1;
             updateDeck();
         }
 
-        function toggleNotes() { body.classList.toggle('mode-speaker'); }
-
-        // Cronômetro do Palestrante
-        let startTime = Date.now();
-        setInterval(() => {
-            if(!body.classList.contains('mode-speaker')) return;
-            let diff = Math.floor((Date.now() - startTime) / 1000);
-            let m = Math.floor(diff / 60).toString().padStart(2, '0');
-            let s = (diff % 60).toString().padStart(2, '0');
-            document.getElementById('dash-time').innerText = `Tempo: ${m}:${s}`;
-        }, 1000);
-
-        // --- 2. ACESSIBILIDADE E TECLADO ---
+        // Navegação por teclado
         document.addEventListener('keydown', (e) => {
-            if(e.target.closest('#speaker-dashboard')) return; // Permite rolar notas sem avançar slide
-            if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
-                e.preventDefault(); navSlide(1);
-            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-                e.preventDefault(); navSlide(-1);
-            } else if (e.key === 'Escape') {
-                body.classList.remove('mode-speaker');
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                e.preventDefault(); navDeck(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault(); navDeck(-1);
             }
         });
 
-        // --- 3. LUPA DE MUSEU (MAGNIFY SCRIPT) E SMART FALLBACK ---
-        function magnify(e, container) {
-            const img = container.querySelector('img');
-            if(!img || img.style.display === 'none') return;
-            
-            const {left, top, width, height} = container.getBoundingClientRect();
-            const x = (e.clientX - left) / width * 100;
-            const y = (e.clientY - top) / height * 100;
-            
-            img.style.transformOrigin = `${x}% ${y}%`;
-            img.style.transform = 'scale(2.2)'; // Fator de Zoom
+        // --- 2. TELEPROMPTER (PRESENTER MODE) ---
+        function toggleTeleprompter() {
+            document.body.classList.toggle('presenter-mode');
         }
 
-        function resetMagnify(container) {
-            const img = container.querySelector('img');
-            if(!img || img.style.display === 'none') return;
-            img.style.transformOrigin = 'center center';
-            img.style.transform = 'scale(1.05)';
-        }
-
-        function handleImgError(imgElement, optTitle, optDesc, optIcon) {
-            if (imgElement.getAttribute('data-fallback-applied')) return;
-            imgElement.setAttribute('data-fallback-applied', 'true');
+        // --- 3. IMAGE FALLBACK LOGIC ---
+        // Garante que se o Github Pages ou a rede bloquear o link da Wikimedia, a tela não quebre.
+        function showImageFallback(imgElement, title, desc) {
+            if (imgElement.getAttribute('data-fallback-triggered')) return;
+            imgElement.setAttribute('data-fallback-triggered', 'true');
             
-            const wrapper = imgElement.parentElement;
-            const title = optTitle || wrapper.getAttribute('data-fallback-title') || 'Registro Histórico Indisponível';
-            const desc = optDesc || wrapper.getAttribute('data-fallback-desc') || 'A imagem local não foi encontrada na mesma pasta deste arquivo HTML. Baixe as imagens e renomeie-as corretamente.';
-            const icon = optIcon || '🏛️';
-
+            const showcase = imgElement.parentElement;
             imgElement.style.display = 'none';
-            wrapper.innerHTML += `
-                <div class="museum-plaque">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">${icon}</div>
-                    <h3>${title}</h3>
-                    <p>${desc}</p>
+            
+            const caption = showcase.querySelector('.image-caption');
+            if(caption) caption.style.display = 'none'; // Esconde a legenda original
+
+            const fallbackHTML = `
+                <div class="img-fallback">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    <h3 style="font-family: 'Playfair Display'; color: #D4AF37; margin-bottom: 0.5rem;">${title}</h3>
+                    <p style="font-size: 0.95rem; margin: 0;">${desc}</p>
+                    <div style="margin-top: 1rem; padding: 4px 8px; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.2); border-radius: 4px; font-size: 0.7rem; color: #ff6b6b;">Arquivo Externo Bloqueado por CORS</div>
                 </div>
             `;
+            showcase.insertAdjacentHTML('beforeend', fallbackHTML);
         }
 
-        // --- 4. ENGINE DE IMPRESSÃO PROFISSIONAL 3.0 ---
-        function triggerPrint() {
-            body.classList.remove('mode-speaker');
-            setTimeout(() => { window.print(); }, 400);
-        }
-
-        // --- 5. MOTOR GRÁFICO (PARTÍCULAS BACKGROUND) ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-        let mouse = { x: null, y: null, radius: 200 };
-
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-        window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; initParticles(); });
-
-        class Particle {
-            constructor(x, y, dx, dy, size, color) {
-                this.x = x; this.y = y; this.dx = dx; this.dy = dy;
-                this.size = size; this.color = color;
-                this.baseX = this.x; this.baseY = this.y;
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color; ctx.fill();
-            }
-            update() {
-                if(mouse.x != null) {
-                    let dxMouse = mouse.x - this.x;
-                    let dyMouse = mouse.y - this.y;
-                    let distance = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-                    if(distance < mouse.radius) {
-                        const forceDirectionX = dxMouse / distance;
-                        const forceDirectionY = dyMouse / distance;
-                        const force = (mouse.radius - distance) / mouse.radius;
-                        this.x -= forceDirectionX * force * 4;
-                        this.y -= forceDirectionY * force * 4;
-                    } else {
-                        if (this.x !== this.baseX) { this.x -= (this.x - this.baseX) / 10; }
-                        if (this.y !== this.baseY) { this.y -= (this.y - this.baseY) / 10; }
-                    }
-                }
-                this.baseX += this.dx; this.baseY += this.dy;
-                if (this.baseX > canvas.width || this.baseX < 0) this.dx = -this.dx;
-                if (this.baseY > canvas.height || this.baseY < 0) this.dy = -this.dy;
-                this.draw();
-            }
-        }
-
-        function initParticles() {
-            canvas.width = innerWidth; canvas.height = innerHeight;
-            particlesArray = [];
-            let num = (canvas.height * canvas.width) / 15000;
-            for (let i = 0; i < num; i++) {
-                let size = (Math.random() * 2.5) + 0.5;
-                let x = Math.random() * innerWidth; let y = Math.random() * innerHeight;
-                let dx = (Math.random() * 0.5) - 0.25; let dy = (Math.random() * 0.5) - 0.25;
-                particlesArray.push(new Particle(x, y, dx, dy, size, 'rgba(197, 160, 89, 0.35)'));
-            }
-        }
-
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+        // --- 4. CANVAS DATA VISUALIZATION (CHART) ---
+        let chartAnimated = false;
+        function initChartAnimation() {
+            if (chartAnimated) return;
+            const canvas = document.getElementById('eugenia-chart');
+            if (!canvas) return;
             
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let dist = ((particlesArray[a].x - particlesArray[b].x) ** 2) + ((particlesArray[a].y - particlesArray[b].y) ** 2);
-                    if (dist < 20000) {
-                        ctx.strokeStyle = `rgba(197, 160, 89, ${1 - dist/20000})`;
-                        ctx.lineWidth = 0.8; ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+
+            const W = rect.width;
+            const H = rect.height;
+            const bottomY = H - 40;
+            
+            let progress = 0;
+            chartAnimated = true;
+
+            function draw() {
+                progress += 0.02; // Velocidade da animação
+                if (progress > 1) progress = 1;
+                
+                // Easing (Cubic Out)
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                ctx.clearRect(0, 0, W, H);
+                
+                const barWidth = 60;
+                const spacing = (W - (barWidth * 3)) / 4;
+                
+                // Barra 1: Trabalhador Negro (Desce)
+                const b1Target = 120;
+                const b1Current = H - 80 - (ease * (H - 80 - b1Target));
+                
+                ctx.fillStyle = '#333333';
+                ctx.fillRect(spacing, bottomY - b1Current, barWidth, b1Current);
+                ctx.fillStyle = '#a1a1aa'; ctx.font = '12px Inter'; ctx.textAlign = 'center';
+                ctx.fillText("Saberes Negros", spacing + (barWidth/2), bottomY + 20);
+
+                // Barra 2: Inaptidão (Fixa Baixa)
+                const b2Target = 40;
+                const b2Current = ease * b2Target;
+                
+                ctx.fillStyle = '#a31621';
+                ctx.fillRect((spacing * 2) + barWidth, bottomY - b2Current, barWidth, b2Current);
+                ctx.fillText("Inaptidão Técnica", (spacing * 2) + barWidth + (barWidth/2), bottomY + 20);
+
+                // Barra 3: Imigração / Eugenia (Sobe)
+                const b3Target = H - 100;
+                const b3Current = ease * b3Target;
+                
+                ctx.fillStyle = '#D4AF37';
+                ctx.fillRect((spacing * 3) + (barWidth * 2), bottomY - b3Current, barWidth, b3Current);
+                ctx.fillStyle = '#D4AF37';
+                ctx.fillText("Eugenia (Estado)", (spacing * 3) + (barWidth * 2) + (barWidth/2), bottomY + 20);
+
+                if (progress < 1) {
+                    requestAnimationFrame(draw);
                 }
+            }
+            draw();
+        }
+
+        // --- 5. PARTICLE NETWORK (BACKGROUND EFFECT) ---
+        const canvasBg = document.getElementById('particle-network');
+        const ctxBg = canvasBg.getContext('2d');
+        let particles = [];
+        
+        function initBgCanvas() {
+            canvasBg.width = window.innerWidth;
+            canvasBg.height = window.innerHeight;
+            particles = [];
+            const particleCount = Math.floor((canvasBg.width * canvasBg.height) / 25000);
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvasBg.width,
+                    y: Math.random() * canvasBg.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 2
+                });
             }
         }
 
-        initParticles();
-        animateParticles();
-        updateDeck();
+        function animateBg() {
+            ctxBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
+            ctxBg.fillStyle = 'rgba(212, 175, 55, 0.4)';
+            
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if (p.x < 0 || p.x > canvasBg.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvasBg.height) p.vy *= -1;
+                
+                ctxBg.beginPath();
+                ctxBg.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctxBg.fill();
+            });
+
+            // Conectar partículas próximas
+            ctxBg.strokeStyle = 'rgba(212, 175, 55, 0.05)';
+            ctxBg.lineWidth = 1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = (dx * dx) + (dy * dy);
+                    
+                    if (dist < 20000) {
+                        ctxBg.beginPath();
+                        ctxBg.moveTo(particles[i].x, particles[i].y);
+                        ctxBg.lineTo(particles[j].x, particles[j].y);
+                        ctxBg.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateBg);
+        }
+
+        window.addEventListener('resize', initBgCanvas);
+        
+        // --- 6. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDeck();
+            initBgCanvas();
+            animateBg();
+        });
+
     </script>
 </body>
 </html>
