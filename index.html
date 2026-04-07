@@ -2,532 +2,592 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Além de Senzalas e Fábricas • Fantasmagoria Historiográfica</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Além de Senzalas e Fábricas • Harvard Seminar • Social History of Labor</title>
+    
+    <!-- Preconnect e Fonts de Alta Performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* melhor para imersão, mas texto continua selecionável */
+        }
+
+        /* ::::: VARIÁVEIS DE DESIGN ::::: */
         :root {
-            --navy: #0A0F2C;
-            --crimson: #9C1F1F;
-            --gold: #D4A017;
-            --parchment: #F8F1E3;
-            --shadow: 0 0 60px rgba(212, 160, 23, 0.6);
-            --glow: 0 0 30px rgba(156, 31, 31, 0.8);
+            --bg-deep: #0A0C12;
+            --surface-glass: rgba(20, 24, 36, 0.65);
+            --gold-primary: #D4AF37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --crimson: #9B2C2C;
+            --text-light: #EFF1F5;
+            --text-muted: #A0A8BA;
+            --border-glow: 0 0 12px rgba(212, 175, 55, 0.3);
+            --transition-smooth: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            --transition-slide: transform 1s cubic-bezier(0.2, 0.9, 0.3, 1.1), opacity 0.9s ease;
         }
-        
-        * { margin:0; padding:0; box-sizing:border-box; }
+
         body {
-            font-family: 'Source Sans 3', sans-serif;
-            background: #0A0F2C;
-            color: #F8F1E3;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            height: 100vh;
+            width: 100vw;
             overflow: hidden;
-            position: relative;
+            color: var(--text-light);
         }
 
-        /* === SURRREAL BACKGROUND: ÉTER HISTÓRICO === */
-        .ether-bg {
+        /* :: BACKGROUND CINEMÁTICO + PARTÍCULAS :: */
+        .cinematic-bg {
             position: fixed;
-            inset: 0;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 20%, #141B2B, #030507);
             z-index: -3;
-            background: radial-gradient(circle at 30% 20%, #1A1F3D 0%, #0A0F2C 70%);
-            overflow: hidden;
+            animation: slowDrift 28s infinite alternate ease-in-out;
         }
-        .ether-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Jean-Baptiste_Debret_-_Mercado_de_escravos.jpg/1280px-Jean-Baptiste_Debret_-_Mercado_de_escravos.jpg') center/cover;
-            opacity: 0.12;
-            mix-blend-mode: multiply;
-            animation: drift 240s linear infinite;
-        }
-        .ether-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(transparent, rgba(156,31,31,0.15), transparent);
-            animation: pulse 18s ease-in-out infinite;
-        }
-        @keyframes drift { 0% { background-position: 0 0; } 100% { background-position: 200% 200%; } }
-        @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-        /* Canvas de partículas surreais (correntes → engrenagens) */
-        #particle-canvas {
+        @keyframes slowDrift {
+            0% { transform: scale(1) translate(0%, 0%); opacity: 0.9; }
+            100% { transform: scale(1.08) translate(2%, 3%); opacity: 1; }
+        }
+
+        /* Overlay texturizado vintage */
+        .grain-overlay {
             position: fixed;
-            inset: 0;
-            z-index: -2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMTUiLz48L3N2Zz4=');
+            background-repeat: repeat;
+            opacity: 0.15;
             pointer-events: none;
-            opacity: 0.25;
+            z-index: -2;
         }
 
-        /* === HEADER ÉPICO === */
+        /* Efeito de luz focal animada */
+        .spotlight {
+            position: fixed;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            top: 30%;
+            left: 20%;
+            filter: blur(60px);
+            z-index: -1;
+            animation: spotlightMove 16s infinite alternate;
+        }
+
+        @keyframes spotlightMove {
+            0% { transform: translate(-5%, -5%) scale(1); opacity: 0.5; }
+            100% { transform: translate(8%, 8%) scale(1.2); opacity: 0.8; }
+        }
+
+        /* :: TOP BAR INSTITUCIONAL :: */
         .top-bar {
             position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 90px;
-            background: linear-gradient(to bottom, rgba(10,15,44,0.95), transparent);
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.8rem 3rem;
             display: flex;
-            align-items: center;
-            padding: 0 5vw;
-            z-index: 1000;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 4px;
-            font-size: 1.1rem;
-            color: #D4A017;
-            border-bottom: 1px solid rgba(212,160,23,0.3);
+            justify-content: space-between;
+            align-items: baseline;
+            z-index: 200;
+            backdrop-filter: blur(8px);
+            background: rgba(10,12,18,0.4);
+            border-bottom: 1px solid rgba(212,175,55,0.25);
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
-        .title-main {
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-shadow: var(--glow);
-            letter-spacing: 8px;
+        .institution {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
         }
-        .subtitle {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            color: #F8F1E3;
-            opacity: 0.9;
-            margin-left: auto;
-        }
+        .institution span { font-weight: 800; color: white; }
+        .professors { font-size: 0.8rem; color: var(--text-muted); font-family: monospace; }
 
-        /* === SLIDE CONTAINER (Harvard + Surreal) === */
-        #presentation-area {
+        /* :: PAINEL DE SLIDES : ESTRUTURA PRINCIPAL :: */
+        #presentation-deck {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 2000px;
-            padding-top: 90px;
-        }
-        .slide {
-            width: 92vw;
-            max-width: 1480px;
-            height: 82vh;
-            background: var(--parchment);
-            color: #1C2526;
-            border-radius: 24px;
-            box-shadow: 
-                var(--shadow),
-                0 0 120px rgba(156,31,31,0.4),
-                inset 0 0 80px rgba(212,160,23,0.15);
-            padding: 5vh 7vw;
-            position: absolute;
-            opacity: 0;
-            transform: rotateY(25deg) scale(0.85) translateZ(-400px);
-            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 12px solid #1C2526;
-        }
-        .slide.active {
-            opacity: 1;
-            transform: rotateY(0) scale(1) translateZ(0);
-            z-index: 10;
-        }
-        .slide::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 40%, rgba(156,31,31,0.08) 100%);
-            pointer-events: none;
-            z-index: 1;
+            perspective: 2200px;
+            transition: transform 0.5s ease;
         }
 
-        /* Tipografia Harvard-Surreal */
+        body.notes-open #presentation-deck {
+            transform: translateX(-12%);
+            filter: drop-shadow(10px 0 20px rgba(0,0,0,0.6));
+        }
+
+        .slide-card {
+            position: absolute;
+            width: 82%;
+            max-width: 1400px;
+            height: 78vh;
+            background: var(--surface-glass);
+            backdrop-filter: blur(14px);
+            border-radius: 36px;
+            border: 1px solid rgba(212,175,55,0.35);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.1) inset;
+            padding: 2.8rem 3.8rem;
+            transition: var(--transition-slide);
+            opacity: 0;
+            transform: translateZ(-180px) rotateY(12deg) scale(0.92);
+            pointer-events: none;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            color: var(--text-light);
+        }
+
+        .slide-card.active {
+            opacity: 1;
+            transform: translateZ(0) rotateY(0deg) scale(1);
+            pointer-events: auto;
+            z-index: 20;
+            box-shadow: 0 40px 70px rgba(0,0,0,0.6), var(--border-glow);
+        }
+
+        /* Custom scroll */
+        .slide-card::-webkit-scrollbar { width: 5px; }
+        .slide-card::-webkit-scrollbar-track { background: #1E2436; border-radius: 10px; }
+        .slide-card::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; }
+
+        /* TIPOGRAFIA AVANÇADA */
         h1 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 6vw, 5.8rem);
-            line-height: 1;
-            color: #1C2526;
-            text-shadow: 4px 4px 0 #D4A017;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF6E0, #D4AF37);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.4rem;
-            color: #9C1F1F;
+            font-size: 1.9rem;
+            font-weight: 400;
             font-style: italic;
-            border-bottom: 3px double #D4A017;
-            padding-bottom: 12px;
-            margin-bottom: 2rem;
+            color: var(--gold-primary);
+            border-left: 4px solid var(--gold-primary);
+            padding-left: 1.2rem;
+            margin: 1rem 0 2rem 0;
+            letter-spacing: -0.2px;
         }
         p, li {
-            font-size: 1.45rem;
-            line-height: 1.75;
-            color: #1C2526;
+            font-size: 1.2rem;
+            line-height: 1.65;
+            color: rgba(239, 241, 245, 0.92);
+            margin-bottom: 1.2rem;
+            font-weight: 300;
         }
         .highlight {
-            background: linear-gradient(90deg, #D4A017, #9C1F1F);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
+            background: linear-gradient(120deg, rgba(212,175,55,0.2) 0%, rgba(212,175,55,0) 80%);
+            padding: 0.1rem 0.6rem;
+            border-left: 3px solid var(--gold-primary);
+            font-weight: 500;
+            color: #F5E7B2;
         }
-
-        /* Layouts surreais */
-        .split-vision {
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            background: rgba(0,0,0,0.4);
+            padding: 1.8rem;
+            border-radius: 24px;
+            margin: 1.5rem 0;
+            color: #DDD9C6;
+            backdrop-filter: blur(8px);
+        }
+        /* grid inovadora */
+        .grid-dual {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            height: 100%;
-            align-items: center;
+            gap: 2.5rem;
+            margin-top: 1rem;
         }
-        .vision-image {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 0 60px rgba(156,31,31,0.6);
-            transition: transform 0.6s ease;
+        .card-gloss {
+            background: rgba(15, 20, 30, 0.65);
+            backdrop-filter: blur(5px);
+            border-radius: 28px;
+            padding: 1.8rem;
+            border: 1px solid rgba(212,175,55,0.3);
+            transition: all 0.3s ease;
         }
-        .vision-image:hover { transform: scale(1.05) rotate(2deg); }
-        .vision-image img {
+        .card-gloss:hover { border-color: var(--gold-primary); transform: translateY(-4px);}
+        .image-figure {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: contrast(1.15) brightness(0.9) sepia(0.3);
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            box-shadow: 0 15px 25px -12px black;
+            filter: grayscale(0.2) contrast(1.05);
+            transition: filter 0.4s;
         }
-        .vision-image::after {
-            content: attr(data-vision);
-            position: absolute;
-            bottom: 20px; left: 20px;
-            background: rgba(28,37,38,0.85);
-            color: #D4A017;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-family: 'Cinzel';
-            font-size: 0.95rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* Quote fantasmagórico */
-        .ethereal-quote {
-            position: relative;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-style: italic;
-            padding: 2.5rem 3rem;
-            background: rgba(28,37,38,0.05);
-            border-left: 8px solid #9C1F1F;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        .ethereal-quote::before {
-            content: '“';
-            font-size: 12rem;
-            position: absolute;
-            top: -40px; left: 20px;
-            opacity: 0.1;
-            color: #9C1F1F;
-            line-height: 1;
+        .image-figure:hover { filter: grayscale(0) contrast(1.1);}
+        .caption {
+            font-size: 0.75rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
         }
 
-        /* Painel do palestrante (agora com modo “Visão do Autor”) */
-        #speaker-dashboard {
+        /* CONTROLES DE NAVEGAÇÃO */
+        .nav-controls {
             position: fixed;
-            top: 90px; right: -420px;
-            width: 420px;
-            height: calc(100vh - 90px);
-            background: #1C2526;
-            color: #F8F1E3;
-            box-shadow: -20px 0 60px rgba(212,160,23,0.4);
-            transition: right 0.8s cubic-bezier(0.23,1,0.32,1);
-            z-index: 2000;
-            border-top-left-radius: 24px;
-        }
-        body.notes-open #speaker-dashboard { right: 0; }
-
-        /* Controles flutuantes */
-        .controls {
-            position: fixed;
-            bottom: 40px;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(10,15,44,0.92);
-            backdrop-filter: blur(20px);
-            padding: 12px 30px;
-            border-radius: 9999px;
             display: flex;
-            gap: 16px;
-            box-shadow: var(--shadow);
-            z-index: 999;
+            gap: 1rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(16px);
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            border: 1px solid rgba(212,175,55,0.4);
+            z-index: 300;
         }
         button {
             background: transparent;
-            color: #D4A017;
-            border: 2px solid #D4A017;
-            padding: 14px 28px;
-            border-radius: 9999px;
-            font-weight: 700;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            padding: 8px 24px;
+            border-radius: 40px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
         }
-        button:hover {
-            background: #D4A017;
-            color: #0A0F2C;
-            transform: scale(1.1);
+        button.primary {
+            background: var(--gold-primary);
+            color: #0A0C12;
         }
-
-        /* Progresso surreal */
+        button.primary:hover { background: #E5C158; transform: scale(1.02);}
+        button.secondary { border: 1px solid rgba(212,175,55,0.6);}
+        button.secondary:hover { background: rgba(212,175,55,0.2); border-color: var(--gold-primary);}
         .progress-bar {
             position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 8px;
-            background: #1C2526;
-            z-index: 3000;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 300;
         }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(to right, #D4A017, #9C1F1F);
             width: 0%;
-            transition: width 0.6s ease;
+            background: linear-gradient(90deg, var(--gold-primary), #FFE4A0);
+            transition: width 0.3s cubic-bezier(0.2, 0.9, 0.6, 1);
         }
 
-        /* Animações de entrada */
-        .fade-in { animation: fadeInText 1.8s ease forwards; }
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* PAINEL DO PALESTRANTE (NOTAS) - DESIGN PREMIUM */
+        .speaker-panel {
+            position: fixed;
+            top: 0;
+            right: -32vw;
+            width: 32vw;
+            height: 100vh;
+            background: rgba(8, 12, 20, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 2px solid var(--gold-primary);
+            z-index: 500;
+            transition: right 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', monospace;
+            box-shadow: -20px 0 40px rgba(0,0,0,0.5);
+        }
+        body.notes-open .speaker-panel { right: 0; }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212,175,55,0.5);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .panel-header h3 { font-size: 1.4rem; letter-spacing: 1px; font-weight: 600; color: var(--gold-primary);}
+        .close-panel {
+            background: none;
+            font-size: 1.8rem;
+            padding: 0;
+            color: white;
+        }
+        .notes-content {
+            overflow-y: auto;
+            flex: 1;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #C0CCE0;
+        }
+        .instruction-badge {
+            background: var(--crimson);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        /* INDICADOR DE SLIDE */
+        .slide-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 250;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .dot.active-dot {
+            background: var(--gold-primary);
+            width: 24px;
+            border-radius: 6px;
+            box-shadow: 0 0 8px gold;
+        }
+
+        /* RESPONSIVIDADE E PRINT (handout) */
+        @media print {
+            body, .slide-card { background: white; color: black; overflow: visible; height: auto; }
+            .speaker-panel, .nav-controls, .top-bar, .progress-bar, .slide-dots, .grain-overlay, .spotlight, .cinematic-bg { display: none !important; }
+            #presentation-deck { transform: none !important; position: relative; width: 100%; height: auto; display: block; }
+            .slide-card { position: relative; opacity: 1; transform: none; page-break-after: always; width: 100%; height: auto; backdrop-filter: none; border: 1px solid #ccc; margin-bottom: 2rem; background: white; color: black; box-shadow: none; }
+            h1 { color: #000; background: none; -webkit-background-clip: unset; }
+            h2 { color: #9B2C2C; }
+            p, li { color: #111; }
         }
     </style>
 </head>
 <body>
-    <div class="ether-bg"></div>
-    <canvas id="particle-canvas"></canvas>
+    <div class="cinematic-bg"></div>
+    <div class="grain-overlay"></div>
+    <div class="spotlight"></div>
 
-    <!-- HEADER ÉPICO -->
     <div class="top-bar">
-        <div class="title-main">ALÉM DE SENZALAS E FÁBRICAS</div>
-        <div class="subtitle">Fantasmagoria Historiográfica • Uma visão Harvard-surreal da formação da classe trabalhadora brasileira</div>
-        <div style="margin-left:auto; font-size:0.95rem; opacity:0.8; text-align:right;">
-            Negro &amp; Gomes (2006)<br>
-            <span style="color:#9C1F1F">PPGET CEFET-MG • Abril 2026</span>
+        <div class="institution"><span>✦ HARVARD | GLOBAL LABOR SEMINAR ✦</span>  •  PPGET CEFET-MG</div>
+        <div class="professors">Mediadores: B. Oliveira • C. Gonçalves • J. Barbosa • M. Santos</div>
+    </div>
+
+    <div id="presentation-deck">
+        <!-- SLIDE 1 - Título e Autoria -->
+        <div class="slide-card active" data-notes="[OPENING REMARKS] <br> Boa noite. A historiografia brasileira forjou um fosso entre escravidão e trabalho livre. Vamos demolir esse muro. <br><strong>Objetivo:</strong> provar que a classe trabalhadora é uma só, desde o cativeiro urbano até as fábricas do século XX.">
+            <div style="display: flex; flex-direction: column; justify-content: center; min-height: 100%;">
+                <h1 style="font-size: 5rem;">Além de Senzalas<br>e Fábricas</h1>
+                <h2 style="border: none; font-size: 2rem;">Uma história social do trabalho no Brasil</h2>
+                <div style="margin-top: 3rem;">
+                    <p style="font-weight: 500;">Antonio Luigi Negro (UFBA) & Flávio Gomes (UFRJ)</p>
+                    <p style="font-size: 0.9rem;">Tempo Social, USP, v.18, n.1, 2006</p>
+                    <div class="quote" style="margin-top: 2rem;">“Que o número de nossos membros seja ilimitado” — Sociedade Londrina de Correspondência<br> ↔ a chave para integrar escravos, libertos, imigrantes e operários.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SLIDE 2 - A Cisão Historiográfica -->
+        <div class="slide-card" data-notes="[SLIDE 2] <br> A historiografia tradicional separava dois mundos: de um lado a escravidão rural e arcaica; de outro, o operariado fabril moderno, europeizado. Negro & Gomes denunciam essa armadilha dicotômica e exigem diálogo.">
+            <h1>1. O Fosso Acadêmico</h1>
+            <h2>Quando a escravidão e o operariado não se encontravam</h2>
+            <div class="grid-dual">
+                <div class="card-gloss">
+                    <div class="image-figure" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Jean-Baptiste_Debret_-_Slavery_in_Brazil_-_Whip_punishment.jpg/800px-Jean-Baptiste_Debret_-_Slavery_in_Brazil_-_Whip_punishment.jpg');"></div>
+                    <p><span class="highlight">Senzala e Coerção:</span> estudos focados no cativeiro rural, vítimas passivas, sem agência de classe.</p>
+                </div>
+                <div class="card-gloss">
+                    <div class="image-figure" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Fabrica_de_tecidos_Bangu_1890.jpg/800px-Fabrica_de_tecidos_Bangu_1890.jpg');"></div>
+                    <p><span class="highlight">Fábrica e Modernidade:</span> o mito do operário branco, imigrante e radical, apagando a herança negra.</p>
+                </div>
+            </div>
+            <div class="quote">“É hora de reaver a trama entre migrantes longe da modernidade e aqueles que viveram o ‘atraso’ da escravidão.”</div>
+        </div>
+
+        <!-- SLIDE 3 - Desconstruindo Dicotomias / modernização sem mudança -->
+        <div class="slide-card" data-notes="[SLIDE 3] <br> Os autores usam o conceito de 'modernização sem mudança' (Eisenberg) e criticam o racismo científico que associou o trabalho livre ao europeu. O negro foi expulso do mercado de trabalho por projeto político, não por incapacidade técnica.">
+            <h1>2. O Mito do “Moderno” vs “Arcaico”</h1>
+            <h2>Racismo estrutural e a invenção do trabalhador ideal</h2>
+            <div class="grid-dual" style="margin-bottom: 1rem;">
+                <div><p><span class="highlight">Escravos urbanos:</span> eram alfaiates, pedreiros, ferreiros, quitandeiras. Controle senhorial frouxo e “escravos de ganho” recebiam quase como salário.</p></div>
+                <div><p><span class="highlight">Substituição ideológica:</span> o imigrante europeu foi forjado como símbolo do progresso, enquanto o liberto foi marginalizado pela lei de vadiagem.</p></div>
+            </div>
+            <p>A ideologia do trabalho livre no Brasil foi construída sob a eugenia: <strong>África = barbárie; Europa = civilização</strong>. Os autores demonstram que não havia incompatibilidade técnica entre escravidão e indústria — havia racismo e projeto de nação.</p>
+            <div class="image-figure" style="height: 180px; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Operarios_na_Fabrica_de_Tecidos_Confianca%2C_1922.jpg/800px-Operarios_na_Fabrica_de_Tecidos_Confianca%2C_1922.jpg'); margin-top: 1rem;"></div>
+        </div>
+
+        <!-- SLIDE 4 - Base Teórica: Thompson + Hobsbawm -->
+        <div class="slide-card" data-notes="[SLIDE 4] <br> Thompson: classe é processo e experiência cultural, não estrutura pronta. Hobsbawm: sindicatos não são a única arena. A roda de samba, o futebol e as irmandades são espaços de classe.">
+            <h1>3. Arquitetura Intelectual</h1>
+            <h2>E.P. Thompson, Hobsbawm e a história dos de baixo</h2>
+            <div class="grid-dual">
+                <div class="card-gloss"><strong>⚡ Thompson (1987)</strong><br>“Classe acontece quando alguns homens, como resultado de experiências comuns, sentem e articulam a identidade de seus interesses.” Luta de classes pode existir mesmo antes de classes ‘maduras’.</div>
+                <div class="card-gloss"><strong>📜 Hobsbawm</strong><br>“A história da classe trabalhadora é maior que a história dos sindicatos e partidos.” Incluir os ‘despolitizados’, os comuns, os culturais: samba, times de fábrica, batucadas.</div>
+            </div>
+            <p style="margin-top: 1rem;">Negro & Gomes utilizam esse arcabouço para enxergar <span class="highlight">resistência cultural</span> como elemento de consciência de classe. O trabalhador não vive só de greve: vive de afeto, jogo, rua e solidariedade.</p>
+        </div>
+
+        <!-- SLIDE 5 - Provas documentais: pânico do Estado e espionagem policial -->
+        <div class="slide-card" data-notes="[SLIDE 5] <br> Fontes primárias: Conselho de Estado (1850) recusa estatuto de 'homens de cor' e manda espiões. DEOPS nos anos 40 usa termos como 'manhoso' e 'destemido' para descrever ativistas. A polícia sempre vigiou a classe trabalhadora.">
+            <h1>4. O Arquivo do Medo</h1>
+            <h2>Quando o Estado teme a “classe separada”</h2>
+            <div class="grid-dual">
+                <div><p>📜 <strong>Império, 1860:</strong> Sociedade de “homens de cor” solicita registro ao Conselho de Estado. A resposta: infiltração policial e espionagem determinada por D. Pedro II. <em>“Formação apartada do corpo nacional.”</em></p></div>
+                <div><p>📁 <strong>Era Vargas / DEOPS:</strong> grevistas classificados como “nortistas”, “manhosos”, “maneirosos”. O operário migrante é visto como ameaça à ordem. A polícia atua para esvaziar piquetes.</p></div>
+            </div>
+            <div class="quote">“Não deixa de ser intrigante observar que trabalhadores fugiam para a polícia — ao invés de fugir da polícia — para confrontar seus senhores.” (Chalhoub)</div>
+        </div>
+
+        <!-- SLIDE 6 - Reflexões Educação Profissional e Saber Técnico Negro -->
+        <div class="slide-card" data-notes="[SLIDE 6 - DEBATE] <br> Os ofícios manuais no século XIX eram dominados por negros e libertos. A criação das Escolas de Aprendizes Artífices (1909) não ocorreu por falta de saber técnico, mas para disciplinar os pobres e criminalizar o trabalhador negro. Conexão PPGET: como a educação profissional reproduz exclusão?">
+            <h1>5. Lições para a História da Educação</h1>
+            <h2>A expropriação do saber-fazer negro e o ensino técnico</h2>
+            <p><span class="highlight">Domínio técnico negro:</span> alfaiates, carpinteiros, ferreiros, pedreiros, marceneiros — escravos e libertos detinham o conhecimento artesanal das cidades. Quando o estado cria o ensino profissional, não é para suprir falta técnica, mas para <strong>higienizar e enquadrar</strong>.</p>
+            <div class="card-gloss" style="margin: 1rem 0;">
+                “A lei de vadiagem e as posturas municipais perseguiam os quitandeiros, capoeiras e artesãos negros, ao mesmo tempo que se construía o mito do trabalhador europeu.”
+            </div>
+            <p>➤ Implicação: a educação profissional no Brasil nasce sob o signo do controle social, apartando o legado de resistência da classe trabalhadora negra.</p>
+        </div>
+
+        <!-- SLIDE 7 - Conclusão e Perguntas Provocadoras (Debate Harvard) -->
+        <div class="slide-card" data-notes="[FINAL - RODA DE DEBATE] <br> Provocações: 1) Por que a escola ainda ensina o mito do operário italiano radical? 2) Como as instituições técnicas perpetuam a ideia do 'bom trabalhador' submisso? 3) A greve branca nas salas de aula: resistência silenciosa. Abrir para contribuições do público.">
+            <h1>6. Fricções Contemporâneas</h1>
+            <h2>Do texto à sala de aula: o que ainda arde?</h2>
+            <ul style="margin-bottom: 2rem;">
+                <li>🔍 <strong>Apagamento da Greve Negra de Salvador (1857):</strong> carregadores paralisaram a cidade. Por que não está nos livros?</li>
+                <li>🎓 <strong>Currículos técnicos e docilidade:</strong> a educação profissional ainda premia o “trabalhador cordial” em vez do sujeito crítico?</li>
+                <li>🕊️ <strong>Greve branca na educação:</strong> como identificamos resistências cotidianas (burocracia, criatividade subversiva) dentro das instituições de ensino?</li>
+            </ul>
+            <div class="quote" style="text-align: center;">“A classe trabalhadora não evolui indiferente à sua própria constituição. A história social tem algo a fazer.”<br>— Negro & Gomes, 2006.</div>
+            <p style="margin-top: 1rem; font-weight: 300;">📢 Debate aberto: mediação por Bruno, Cristine, Jean e Marina.</p>
         </div>
     </div>
 
-    <div id="presentation-area">
-        <!-- SLIDE 1: TÍTULO SURRREAL -->
-        <div class="slide active" data-notes="ABERTURA – Fala sugerida: 'Bem-vindos à Fantasmagoria. Hoje não vamos apenas apresentar um artigo. Vamos invocar as sombras que as senzalas e as fábricas ainda projetam sobre o presente. Preparem-se: o que vocês verão não é uma aula. É uma visão.'">
-            <div style="text-align:center; height:100%; display:flex; flex-direction:column; justify-content:center; position:relative;">
-                <div style="font-size:1.1rem; letter-spacing:6px; color:#9C1F1F; margin-bottom:2rem;">SEMINÁRIO DE LEITURA HISTORIOGRÁFICA</div>
-                <h1 style="font-size:6rem; line-height:0.9;">ALÉM DE<br>SENZALAS<br>E FÁBRICAS</h1>
-                <p style="font-size:2.4rem; font-family:'Playfair Display'; color:#9C1F1F; margin:2rem 0 4rem;">Uma história social do trabalho que transcende o tempo</p>
-                
-                <div class="vision-image" style="width:420px; height:420px; margin:0 auto; border-radius:50%; overflow:hidden; box-shadow:0 0 120px #D4A017;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Jean-Baptiste_Debret_-_Mercado_de_escravos.jpg/1280px-Jean-Baptiste_Debret_-_Mercado_de_escravos.jpg" alt="Mercado de escravos">
-                </div>
-                
-                <div style="margin-top:3rem; font-family:'Cinzel'; font-size:1.4rem; color:#1C2526;">
-                    Antonio Luigi Negro • Flávio Gomes<br>
-                    <span style="font-size:1rem; opacity:0.7;">(Tempo Social, 2006) • Reimaginado em 2026</span>
-                </div>
-                
-                <div style="position:absolute; bottom:40px; right:60px; font-size:1.1rem; background:rgba(156,31,31,0.9); color:#F8F1E3; padding:12px 32px; border-radius:9999px;">
-                    NÍVEL HARVARD • VISÃO SURRREAL
-                </div>
-            </div>
-        </div>
+    <!-- Navegação e Dots -->
+    <div class="nav-controls">
+        <button id="prevBtn" class="secondary">◀ ANTERIOR</button>
+        <button id="notesBtn" class="primary">🎤 SPEAKER NOTES</button>
+        <button id="printBtn" class="secondary">🖨️ HANDOUT</button>
+        <button id="nextBtn" class="primary">PRÓXIMO ▶</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="slide-dots" id="slideDots"></div>
 
-        <!-- SLIDE 2: A CISÃO FANTASMAGÓRICA -->
-        <div class="slide" data-notes="PARTE 1 – A grande ferida historiográfica. Mostre a imagem se fundindo lentamente. Fale sobre o muro que separou escravidão de operariado.">
-            <h1>1. A Grande Ferida</h1>
-            <h2>O Muro que Separou Escravos de Operários</h2>
-            <div class="split-vision">
-                <div>
-                    <p class="highlight">De um lado, a senzala: arcaico, rural, passivo.</p>
-                    <p class="highlight">Do outro, a fábrica: moderno, urbano, europeu, consciente.</p>
-                    <div class="ethereal-quote">"É hora de reaver a trama entre migrantes 'longe da modernidade' e aqueles que viveram o 'atraso' da escravidão."</div>
-                </div>
-                <div class="vision-image" style="height:520px;" data-vision="Senzala → Fábrica">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Marcenaria.jpg/800px-Marcenaria.jpg" alt="Marcenaria escravizada">
-                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:5rem; color:rgba(156,31,31,0.4); mix-blend-mode:difference;">→</div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Oper%C3%A1rios_da_F%C3%A1brica_de_Tecidos_Bangu%2C_1890.jpg/800px-Oper%C3%A1rios_da_F%C3%A1brica_de_Tecidos_Bangu%2C_1890.jpg" alt="Operários Bangu" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.7; mix-blend-mode:screen;">
-                </div>
-            </div>
+    <!-- Painel de Notas do Apresentador -->
+    <div class="speaker-panel">
+        <div class="panel-header">
+            <h3>🎙️ SCRIPT · GUIÃO DE MEDIAÇÃO</h3>
+            <button id="closeNotesPanel" class="close-panel">✕</button>
         </div>
-
-        <!-- SLIDE 3: DICOTOMIAS QUEIMAM -->
-        <div class="slide" data-notes="PARTE 2 – As dicotomias não são neutras. São armas ideológicas. Mostre os cartões girando.">
-            <h1>2. As Dicotomias que Queimam</h1>
-            <h2>Modernização sem Mudança = Racismo Científico</h2>
-            <div style="display:flex; gap:2rem; height:70%;">
-                <div style="flex:1; background:#1C2526; color:#F8F1E3; padding:2rem; border-radius:16px; position:relative;">
-                    <h3 style="color:#D4A017;">O MITO DO ARCAICO</h3>
-                    <p style="font-size:1.6rem;">Escravo = coisa, necessidade, atraso biológico</p>
-                    <div style="position:absolute; bottom:2rem; right:2rem; font-size:8rem; opacity:0.1;">🪓</div>
-                </div>
-                <div style="flex:1; background:#D4A017; color:#1C2526; padding:2rem; border-radius:16px; position:relative; transform:rotate(3deg);">
-                    <h3>O MITO DO MODERNO</h3>
-                    <p style="font-size:1.6rem;">Imigrante italiano = consciência, revolta, futuro</p>
-                    <div style="position:absolute; bottom:2rem; left:2rem; font-size:8rem; opacity:0.15;">⚙️</div>
-                </div>
-            </div>
-            <p style="text-align:center; font-size:2rem; margin-top:2rem;" class="highlight">A substituição não foi técnica. Foi racial e política.</p>
-        </div>
-
-        <!-- SLIDE 4: THOMPSON &amp; HOBSBAWM COMO ORÁCULOS -->
-        <div class="slide" data-notes="PARTE 3 – A teoria não é livro. É uma lanterna acesa nas trevas.">
-            <h1>3. Os Oráculos Britânicos</h1>
-            <h2>E. P. Thompson &amp; Eric Hobsbawm na Terra do Café e do Aço</h2>
-            <div class="split-vision">
-                <div>
-                    <ul style="font-size:1.5rem; line-height:2.4;">
-                        <li>✅ Classe não é “carteira assinada”. É <span class="highlight">experiência vivida</span>.</li>
-                        <li>✅ Luta de classes existe mesmo antes da “classe madura”.</li>
-                        <li>✅ Samba, futebol de várzea e irmandades = resistência de classe.</li>
-                    </ul>
-                </div>
-                <div class="vision-image" style="height:520px;" data-vision="História de baixo para cima">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Jean-Baptiste_Debret_-_Boutique_de_Barbier_-_1822.jpg/800px-Jean-Baptiste_Debret_-_Boutique_de_Barbier_-_1822.jpg" alt="Barbeiro">
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 5: O PÂNICO DO ESTADO (DOCUMENTOS VIVOS) -->
-        <div class="slide" data-notes="PARTE 4 – O Estado sempre soube. E sempre teve medo.">
-            <h1>4. O Pânico Eterno do Estado</h1>
-            <h2>De D. Pedro II ao DEOPS: a mesma espia</h2>
-            <div style="background:#1C2526; color:#F8F1E3; padding:3rem; border-radius:20px; font-size:1.7rem; text-align:center;">
-                “Classe separada” • “Formação apartada do corpo nacional” • “Nortistas em alarido”<br>
-                <span style="color:#D4A017; font-size:2.8rem;">→</span> Infiltração policial desde o Império até a República
-            </div>
-        </div>
-
-        <!-- SLIDE 6: CONEXÃO PPGET – O SABER QUE FOI ROUBADO -->
-        <div class="slide" data-notes="PARTE 5 – Aqui entra o nosso campo: Educação Profissional. O ensino técnico nasceu para disciplinar quem já dominava os ofícios.">
-            <h1>5. O Saber Negro que o Estado Roubou</h1>
-            <h2>Escolas de Aprendizes Artífices = Controle, não progresso</h2>
-            <p class="highlight" style="font-size:2.2rem;">Os mestres de ofício eram escravos de ganho, quitandeiras, pedreiros libertos.<br>Não faltava técnica. Faltava “branquear” o trabalhador.</p>
-        </div>
-
-        <!-- SLIDE 7: PROVOCAÇÕES FINAIS (INTERATIVAS) -->
-        <div class="slide" data-notes="FECHAMENTO – Abra o microfone. Essas perguntas não têm resposta fácil.">
-            <h1>7. As Perguntas que Ainda Queimam</h1>
-            <ol style="font-size:1.8rem; line-height:2.8; margin-top:3rem;">
-                <li>Por que a Greve Negra de 1857 ainda é invisível nos livros didáticos?</li>
-                <li>Como a “greve branca” (resistência silenciosa) acontece hoje nas salas de aula e nas fábricas?</li>
-                <li>O que a Educação Profissional ainda deve à ideologia da “modernização sem mudança”?</li>
-            </ol>
-            <div style="text-align:center; margin-top:4rem; font-size:2.5rem; color:#9C1F1F;">O passado não morreu.<br>Ele apenas mudou de uniforme.</div>
+        <div class="notes-content" id="notesPanelContent">
+            <!-- Conteúdo dinâmico -->
         </div>
     </div>
-
-    <!-- PAINEL LATERAL -->
-    <div id="speaker-dashboard">
-        <div style="padding:2rem; background:#D4A017; color:#1C2526; text-align:center; font-family:'Cinzel'; font-size:1.4rem;">🎙️ VISÃO DO AUTOR</div>
-        <div id="notes-display" style="padding:2rem; height:calc(100% - 70px); overflow-y:auto; font-size:1.3rem; line-height:1.9;"></div>
-    </div>
-
-    <!-- CONTROLES -->
-    <div class="controls">
-        <button onclick="toggleNotes()">📜 Modo Visionário</button>
-        <button onclick="window.print()">🖨️ Imprimir Fantasmagoria (PDF)</button>
-        <button onclick="prevSlide()">◀ Anterior</button>
-        <button onclick="nextSlide()">Próximo ▶</button>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
 
     <script>
-        // Partículas surreais (correntes virando engrenagens)
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 4 + 1;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.speedY = Math.random() * 0.8 - 0.4;
-                this.life = 300;
-                this.type = Math.random() > 0.5 ? 'chain' : 'gear';
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life--;
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.life / 300;
-                if (this.type === 'chain') {
-                    ctx.fillStyle = '#9C1F1F';
-                    ctx.fillRect(this.x, this.y, this.size*3, this.size*0.6);
-                } else {
-                    ctx.strokeStyle = '#D4A017';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size*2, 0, Math.PI*2);
-                    ctx.stroke();
-                }
-                ctx.restore();
-            }
-        }
-        
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (particles.length < 80) particles.push(new Particle());
-            
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.update();
-                p.draw();
-                if (p.life <= 0) particles.splice(i, 1);
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        
-        window.addEventListener('resize', resizeCanvas);
-        
-        // Slides
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const notesDisplay = document.getElementById('notes-display');
-        
-        function renderSlide() {
-            slides.forEach((slide, i) => {
+        // ---------- ENGINE DE ALTA PERFORMANCE ----------
+        const slides = document.querySelectorAll('.slide-card');
+        let currentIdx = 0;
+        const total = slides.length;
+        const progressFill = document.getElementById('progressFill');
+        const dotsContainer = document.getElementById('slideDots');
+        const notesPanel = document.querySelector('.speaker-panel');
+        const notesContent = document.getElementById('notesPanelContent');
+        const body = document.body;
+
+        function updateSlidesAndUI() {
+            slides.forEach((slide, idx) => {
                 slide.classList.remove('active');
-                if (i === currentSlide) {
-                    slide.classList.add('active');
-                    notesDisplay.innerHTML = slide.getAttribute('data-notes') || '<em>Sem visão adicional.</em>';
-                }
+                if (idx === currentIdx) slide.classList.add('active');
             });
-            const progress = (currentSlide / (slides.length - 1)) * 100;
-            document.getElementById('progress').style.width = progress + '%';
+            const percent = ((currentIdx) / (total - 1)) * 100;
+            progressFill.style.width = `${percent}%`;
+            // atualizar dots
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                if (i === currentIdx) dot.classList.add('active-dot');
+                else dot.classList.remove('active-dot');
+            });
+            // Atualizar painel de notas com base no atributo data-notes
+            const activeSlide = slides[currentIdx];
+            let notesRaw = activeSlide.getAttribute('data-notes') || "<em>Sem anotações para este slide.</em>";
+            notesContent.innerHTML = `<div class="instruction-badge">🎤 FALA SUGERIDA (Harvard Style)</div>${notesRaw.replace(/\n/g, '<br>')}`;
         }
-        
-        function nextSlide() { currentSlide = Math.min(currentSlide + 1, slides.length - 1); renderSlide(); }
-        function prevSlide() { currentSlide = Math.max(currentSlide - 1, 0); renderSlide(); }
-        
-        function toggleNotes() {
-            document.body.classList.toggle('notes-open');
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= total) index = total - 1;
+            currentIdx = index;
+            updateSlidesAndUI();
         }
+
+        function nextSlide() { if (currentIdx < total-1) goToSlide(currentIdx+1); }
+        function prevSlide() { if (currentIdx > 0) goToSlide(currentIdx-1); }
+
+        // Criar Dots
+        function buildDots() {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === currentIdx) dot.classList.add('active-dot');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+        buildDots();
+
+        // Controles
+        document.getElementById('nextBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
         
-        // Teclado
-        document.addEventListener('keydown', e => {
+        // Painel de notas
+        function toggleNotesPanel() {
+            body.classList.toggle('notes-open');
+        }
+        document.getElementById('notesBtn').addEventListener('click', toggleNotesPanel);
+        document.getElementById('closeNotesPanel').addEventListener('click', toggleNotesPanel);
+        
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
-            if (e.key === 'Escape') document.body.classList.remove('notes-open');
+            if (e.key === 'Escape' && body.classList.contains('notes-open')) toggleNotesPanel();
         });
         
-        // Inicialização
-        resizeCanvas();
-        animateParticles();
-        renderSlide();
-        
-        console.log('%c✅ Apresentação Fantasmagórica carregada. Nível Harvard + Surreal ativado.', 'color:#D4A017; font-size:1.2rem; font-family:Cinzel');
+        // Inicializar notas
+        updateSlidesAndUI();
     </script>
 </body>
 </html>
