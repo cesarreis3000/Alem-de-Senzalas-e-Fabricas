@@ -3,53 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Além de Senzalas e Fábricas - Apresentação CEFET-MG</title>
+    <title>Além de Senzalas e Fábricas | Apresentação PPGET CEFET-MG</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,300&family=Open+Sans:wght@300;400;600&display=swap');
-
         :root {
-            --primary-color: #0A2342; /* Azul profundo CEFET */
-            --secondary-color: #175676; 
-            --accent-color: #D3A537; /* Dourado acadêmico */
-            --bg-color: #F8F9FA;
-            --text-color: #333333;
+            /* Paleta de Cores Sofisticada */
+            --cefet-blue: #0A2342;
+            --cefet-light-blue: #175676;
+            --gold: #D4AF37;
+            --gold-light: #F3E5AB;
+            --dark-bg: #121212;
+            --text-light: #F8F9FA;
+            --text-dark: #2B2D42;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow: hidden; /* Previne rolagem no modo slide */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-dark);
+            overflow: hidden; /* Trava rolagem no modo apresentação */
+            background-image: url('https://images.unsplash.com/photo-1507608158173-1dcec673a2e5?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
         }
 
-        /* Container principal */
-        #deck-container {
+        /* Máscara escura sobre o fundo */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, rgba(10,35,66,0.95) 0%, rgba(23,86,118,0.85) 100%);
+            z-index: -1;
+        }
+
+        /* Header Corporativo CEFET */
+        .header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255,255,255,0.7);
+            z-index: 100;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .header b { color: var(--gold); }
+
+        /* Container Principal */
+        #deck {
             position: relative;
             width: 100vw;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            perspective: 1000px;
         }
 
-        /* Estilo dos Slides */
+        /* Estilo Base dos Slides (Glassmorphism) */
         .slide {
             position: absolute;
-            width: 80%;
-            height: 80%;
-            background: white;
+            width: 85vw;
+            max-width: 1400px;
+            height: 80vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 4rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             opacity: 0;
-            transform: translateY(50px) scale(0.95);
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: translateZ(-100px) rotateY(5deg) translateX(50px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             pointer-events: none;
             display: flex;
             flex-direction: column;
@@ -58,217 +95,375 @@
 
         .slide.active {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateZ(0) rotateY(0) translateX(0);
             pointer-events: all;
             z-index: 10;
         }
 
-        /* Tipografia */
-        h1, h2, h3 {
-            font-family: 'Merriweather', serif;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+        .slide.past {
+            transform: translateZ(-100px) rotateY(-5deg) translateX(-50px);
         }
 
-        h1 { font-size: 2.8rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;}
-        h2 { font-size: 2rem; color: var(--secondary-color); }
-        p, li { font-size: 1.3rem; line-height: 1.8; margin-bottom: 1rem; }
-        ul { margin-left: 2rem; }
-        .quote { font-style: italic; border-left: 4px solid var(--accent-color); padding-left: 1rem; color: #555; }
-        .highlight { color: var(--secondary-color); font-weight: 600; }
+        /* Tipografia dos Slides */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--cefet-blue);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-        /* Controles flutuantes */
-        .controls {
+        p, li {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            color: #333;
+        }
+
+        ul { margin-left: 2rem; }
+
+        .highlight {
+            background: linear-gradient(120deg, var(--gold-light) 0%, transparent 100%);
+            padding: 0 10px;
+            font-weight: 600;
+            color: var(--cefet-blue);
+            border-left: 4px solid var(--gold);
+        }
+
+        /* Layouts de Slide Específicos */
+        .split-slide {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            height: 100%;
+            align-items: center;
+        }
+
+        .image-panel {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Diagramas CSS */
+        .vs-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .vs-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            flex: 1;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--cefet-light-blue);
+        }
+        .vs-card.dark { border-top: 5px solid var(--cefet-blue); }
+        .vs-center {
+            display: flex;
+            align-items: center;
+            font-family: 'Playfair Display';
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        /* Controles Inferiores */
+        .controls-container {
             position: fixed;
             bottom: 2rem;
-            right: 2rem;
+            right: 3rem;
             display: flex;
             gap: 1rem;
             z-index: 100;
         }
 
         button {
-            background-color: var(--primary-color);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
             color: white;
-            border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
         }
 
-        button:hover { background-color: var(--secondary-color); }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        /* Progresso */
-        .progress-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            height: 6px;
-            background-color: var(--accent-color);
-            transition: width 0.4s ease;
-            z-index: 100;
+        button:hover {
+            background: var(--gold);
+            color: var(--cefet-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
         }
 
-        /* Notas do Palestrante (Speaker Notes) */
+        button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* Barra de Progresso */
+        .progress-container {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 6px;
+            background: rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+
+        /* Notas do Palestrante (Guião) */
         #speaker-notes {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30vh;
-            background: #222;
-            color: #eee;
-            padding: 2rem;
+            bottom: 0; left: 0; width: 100%; height: 35vh;
+            background: var(--cefet-blue);
+            color: white;
+            padding: 2.5rem 3rem;
             z-index: 90;
             transform: translateY(100%);
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             overflow-y: auto;
-            border-top: 4px solid var(--accent-color);
-            font-size: 1.1rem;
+            border-top: 5px solid var(--gold);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
-
         #speaker-notes.visible { transform: translateY(0); }
-        .notes-title { color: var(--accent-color); font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;}
+        .notes-title { color: var(--gold); font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;}
+        .notes-content { font-size: 1.2rem; line-height: 1.8; color: #E0E0E0;}
 
-        /* Cabeçalho estático superior */
-        .header-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 100;
-        }
-
-        .header-bar img { height: 40px; opacity: 0.8; }
-        .header-text { font-size: 0.9rem; color: #777; font-weight: 600; }
-
-        /* Estilos de Impressão */
+        /* CSS para a Versão de Impressão */
         @media print {
-            body { overflow: auto; background: white; }
-            .controls, .progress-bar, .header-bar, #speaker-notes { display: none !important; }
-            #deck-container { display: block; height: auto; }
+            @page { size: landscape; margin: 0; }
+            body { 
+                background: white !important; 
+                overflow: auto; 
+                color: black;
+            }
+            .bg-overlay, .header, .controls-container, .progress-container, #speaker-notes { 
+                display: none !important; 
+            }
+            #deck { display: block; height: auto; }
             .slide {
                 position: relative;
-                width: 100%;
+                width: 100vw;
                 height: 100vh;
+                transform: none !important;
+                opacity: 1 !important;
                 box-shadow: none;
-                transform: none;
-                opacity: 1;
-                pointer-events: all;
-                page-break-after: always;
+                border: none;
                 border-radius: 0;
-                padding: 2rem;
+                page-break-after: always;
+                background: white !important;
+                padding: 50px;
+                display: flex;
             }
+            h1 { color: black; }
+            .highlight { background: #f0f0f0; border-left: 4px solid black; }
+            .vs-card { border: 1px solid #ccc; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-bar">
-        <div class="header-text">CEFET-MG | PPGET - História da Educação Profissional</div>
-        <div class="header-text">Professores: Irlen Gonçalves e Isis Castro</div>
+    <div class="bg-overlay"></div>
+
+    <div class="header">
+        <div><b>CEFET-MG</b> | PPGET - História da Educação Profissional</div>
+        <div>Professores: <b>Irlen Gonçalves</b> e <b>Isis Castro</b></div>
     </div>
 
     <div id="speaker-notes">
-        <div class="notes-title">Guião da Apresentação (Apenas o grupo vê)</div>
-        <div id="notes-content"></div>
+        <div class="notes-title"><span>🎙️</span> GUIÃO DO APRESENTADOR (Visível apenas para a equipe)</div>
+        <div class="notes-content" id="notes-content"></div>
     </div>
 
-    <div class="progress-bar" id="progress"></div>
+    <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
 
-    <div class="controls">
-        <button onclick="toggleNotes()">📋 Ocultar/Exibir Notas</button>
-        <button onclick="window.print()">🖨️ Versão Impressão</button>
-        <button id="btn-prev" onclick="changeSlide(-1)">◀ Anterior</button>
-        <button id="btn-next" onclick="changeSlide(1)">Próximo ▶</button>
+    <div class="controls-container">
+        <button onclick="toggleNotes()" title="Abre o texto para leitura do grupo">📋 Ler Guião</button>
+        <button onclick="window.print()" title="Gera PDF em formato paisagem">🖨️ Salvar PDF</button>
+        <button id="btn-prev" onclick="changeSlide(-1)">◀ Voltar</button>
+        <button id="btn-next" onclick="changeSlide(1)">Avançar ▶</button>
     </div>
 
-    <div id="deck-container">
+    <div id="deck">
 
-        <div class="slide active" data-notes="Bem-vindos a todos! Hoje nosso grupo vai conduzir o debate sobre o texto clássico de Negro e Gomes. O objetivo não é só resumir o texto, mas conectar as reflexões deles com o que estudamos sobre Educação Profissional. Apresente os membros do grupo.">
-            <h1>Além de senzalas e fábricas</h1>
-            <h2>Uma História Social do Trabalho no Brasil</h2>
-            <p><strong>Autores:</strong> Antonio Luigi Negro (UFBA) e Flávio Gomes (UFRJ)<br>
-               <strong>Publicação:</strong> Tempo Social - Revista de Sociologia da USP (2006)</p>
-            <br><br>
-            <p><strong>Grupo Mediador:</strong><br>
-            Bruno Fernandes Magalhães de Oliveira<br>
-            Cristine Gonçalves de Souza<br>
-            Jean Cesar dos Reis Barbosa<br>
-            Marina Evaristo dos Santos</p>
+        <div class="slide active" data-notes="[TODOS/ABERTURA] Bom dia/boa noite a todos. Professores Irlen e Isis, colegas. Nosso grupo - formado por Bruno, Cristine, Jean e Marina - vai conduzir o debate de hoje sobre o texto fundamental de Antonio Luigi Negro e Flávio Gomes: 'Além de senzalas e fábricas: uma história social do trabalho'. Escolhemos uma apresentação dinâmica para explorar a densidade desse balanço historiográfico. Vamos começar.">
+            <div style="text-align: center;">
+                <h2 style="margin-bottom: 10px;">Seminário de Leitura</h2>
+                <h1 style="font-size: 4.5rem;">Além de Senzalas e Fábricas</h1>
+                <p style="font-size: 1.8rem; font-family: 'Playfair Display'; color: #555; font-style: italic;">Uma História Social do Trabalho no Brasil</p>
+                
+                <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1);">
+                    <p><strong>Autores da Obra:</strong> Antonio Luigi Negro (UFBA) e Flávio Gomes (UFRJ)</p>
+                    <p style="margin-top: 1.5rem; font-weight: 600; color: var(--cefet-blue);">Grupo Mediador:</p>
+                    <p style="font-size: 1.2rem;">Bruno Fernandes M. de Oliveira • Cristine Gonçalves de Souza <br> Jean Cesar dos Reis Barbosa • Marina Evaristo dos Santos</p>
+                </div>
+            </div>
         </div>
 
-        <div class="slide" data-notes="Jean, aqui você pode falar sobre como a academia era dividida. Quem estudava escravidão ficava no rural (o negro passivo). Quem estudava trabalho ia para São Paulo estudar os europeus. Negro e Gomes dizem: 'Chega dessa divisão! A classe trabalhadora é uma só e começou muito antes das fábricas.'">
+        <div class="slide" data-notes="[MEDIAÇÃO 1] O texto começa apontando um grande problema na nossa academia: um muro invisível. De um lado, historiadores estudavam a escravidão (sempre ligada ao campo, ao atraso). De outro, estudavam a classe operária (ligada à fábrica, à modernidade e ao imigrante europeu). Negro e Gomes dizem: precisamos quebrar esse muro. A classe trabalhadora brasileira não nasceu do zero com a chegada do europeu.">
             <h1>1. O Desafio Historiográfico</h1>
-            <h2>O hiato na pesquisa brasileira</h2>
-            <ul>
-                <li><strong>A Separação Acadêmica:</strong> Durante décadas, a historiografia estudou a escravidão (como arcaica e rural) separada da formação operária (vista como moderna, urbana e europeia).</li>
-                <li><strong>A Tese Central do Artigo:</strong> A necessidade urgente de um diálogo. A classe trabalhadora não nasceu do zero com a imigração europeia.</li>
-                <li><strong>Quebra de Dicotomias:</strong> Romper com visões engessadas (Moderno vs. Arcaico; Instruído vs. Rude; Liberdade vs. Escravidão).</li>
-            </ul>
-            <p class="quote">"É hora de não mais continuar seguindo a mesma trilha batida pelas dicotomias... No primeiro, o protagonismo é a marca; no segundo, não há sujeitos históricos."</p>
+            <h2>O Hiato na Pesquisa Brasileira</h2>
+            <div class="split-slide">
+                <div>
+                    <p class="highlight">A historiografia nacional construiu um muro artificial entre dois mundos que, na realidade, se fundem.</p>
+                    <br>
+                    <ul>
+                        <li><strong>Estudos sobre Escravidão:</strong> Focados no rural, na coerção, associados ao "arcaísmo" e à passividade técnica.</li>
+                        <li><strong>Estudos sobre Trabalho Livre:</strong> Focados nas fábricas do Sudeste, na imigração europeia, associados à "modernidade" e à consciência política.</li>
+                    </ul>
+                    <p style="margin-top: 2rem;"><strong>A Tese:</strong> A formação da classe trabalhadora no Brasil é contínua e plural. Africanos, crioulos, libertos e imigrantes compartilharam o mesmo cenário formador.</p>
+                </div>
+                <div class="image-panel" style="background-image: url('https://images.unsplash.com/photo-1542404396-b016bb4b1116?q=80&w=1000&auto=format&fit=crop');">
+                    <div class="image-caption">Fábricas e ruas: cenários que se cruzam.</div>
+                </div>
+            </div>
         </div>
 
-        <div class="slide" data-notes="Cristine (ou Marina/Bruno), aqui a ideia é falar sobre a matriz teórica. Citar que eles não olham a classe apenas como 'carteira assinada'. Thompson é a chave: classe é vivência. Se o negro apanhava da polícia nas ruas de Salvador em 1850 lutando por impostos, isso JÁ É luta de classes.">
-            <h1>2. O Referencial Teórico</h1>
-            <h2>A História vista de Baixo</h2>
-            <p>O texto se apoia fortemente na historiografia social britânica marxista:</p>
-            <ul>
-                <li><span class="highlight">E. P. Thompson:</span> A classe social não é uma estatística pronta na "geladeira". É uma <strong>experiência histórica e cultural</strong>. Existe "luta de classes sem classes maduras".</li>
-                <li><span class="highlight">Eric Hobsbawm:</span> A história da classe trabalhadora vai muito além dos sindicatos formais e partidos. É preciso olhar para os "comuns", os despolitizados e as massas marginais.</li>
-            </ul>
-            <p><strong>Consequência:</strong> Práticas culturais (samba, futebol de várzea, irmandades) não são alienação, mas espaços autênticos de classe.</p>
+        <div class="slide" data-notes="[MEDIAÇÃO 1 - CONTINUAÇÃO] Para fazer essa junção, os autores atacam o que chamam de 'dicotomias'. Olhem para a tela: a visão clássica rebaixa o escravizado a um ser sem vontade política, movido apenas pela necessidade. E eleva o imigrante a herói do protagonismo. O texto prova que isso é falso: houve 'modernização sem mudança'. O Brasil mudou a mão de obra por racismo científico, e não por inépcia do trabalhador negro.">
+            <h1>2. A Desconstrução das Dicotomias</h1>
+            <h2>Modernização sem Mudança</h2>
+            <p>O texto ataca ferozmente as divisões binárias que engessam a pesquisa e criam hierarquias de protagonismo:</p>
+            
+            <div class="vs-box">
+                <div class="vs-card dark">
+                    <h3 style="color: var(--cefet-blue);">O Polo "Archaico" (Escravidão)</h3>
+                    <ul>
+                        <li>Visto apenas como rural e rude.</li>
+                        <li>Reinado da "necessidade" biológica.</li>
+                        <li>Negro retratado sem iniciativa histórica ou consciência de classe.</li>
+                    </ul>
+                </div>
+                <div class="vs-center">VS</div>
+                <div class="vs-card">
+                    <h3 style="color: var(--cefet-light-blue);">O Polo "Moderno" (Operariado)</h3>
+                    <ul>
+                        <li>Visto como urbano e instruído.</li>
+                        <li>Reinado do "protagonismo".</li>
+                        <li>Imigrante europeu alçado a único vetor de militância e agência política.</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; text-align: center;" class="highlight">A substituição do trabalhador foi um projeto ideológico e eugênico de "branqueamento", e não uma evolução tecnológica natural.</p>
         </div>
 
-        <div class="slide" data-notes="Bruno, você pode puxar essa parte. Mostrar como os autores provam isso nos documentos. O Império já tinha medo dos negros se organizando, assim como a República teve medo dos operários. A repressão policial (DEOPS) não separou europeu de nordestino, todos eram 'perigosos'.">
-            <h1>3. As Fontes: O Controle do Estado</h1>
-            <h2>A materialidade da pesquisa histórica</h2>
-            <p>Os autores utilizam fontes repressivas para demonstrar o controle social contínuo:</p>
-            <ul>
-                <li><strong>No Império (Conselho de Estado):</strong> O pânico de D. Pedro II diante do pedido de estatutos por "homens de cor", gerando ordem para infiltração policial por temor de uma "classe separada".</li>
-                <li><strong>Na República (DEOPS e Aperj):</strong> Fichas da polícia política nas décadas de 40 e 50 classificando operários "nortistas" e comunistas.</li>
-            </ul>
-            <p class="quote">O Estado temia a organização. A polícia rotulava os trabalhadores como "classe perigosa", usando adjetivos como "manhoso" ou "maneiroso".</p>
+        <div class="slide" data-notes="[MEDIAÇÃO 2] Para sustentar essa tese, em quem os autores se baseiam? Na historiografia marxista inglesa, principalmente em E. P. Thompson. Para Thompson, classe não é o que está escrito na carteira de trabalho. Classe é VIVÊNCIA. Se os negros se organizavam em irmandades ou negociavam valores com seus senhores nas ruas, eles estavam exercendo luta de classes, mesmo sem um sindicato formal.">
+            <h1>3. O Alicerce Teórico</h1>
+            <h2>A História Vista de Baixo: E. P. Thompson</h2>
+            <div class="split-slide">
+                <div class="image-panel" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead27d8?q=80&w=1000&auto=format&fit=crop');">
+                    <div class="image-caption">A classe faz a si mesma no cotidiano.</div>
+                </div>
+                <div>
+                    <p>A obra utiliza o arcabouço teórico britânico para repensar o Brasil:</p>
+                    <ul>
+                        <li><span class="highlight">Classe como Experiência:</span> A classe social não é uma categoria econômica estática tirada "pronta da geladeira". Ela <i>faz-se</i> no cotidiano, através do compartilhamento de valores, dores e lutas.</li>
+                        <li><span class="highlight">Luta de Classes sem Classes:</span> É possível haver intenso embate social (como escravizados negociando nas ruas do Império) mesmo sem a existência de um proletariado fabril amadurecido.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="slide" data-notes="Este é o ponto alto do grupo para a disciplina das professoras Irlen e Isis! Conectem com o CEFET. O escravizado era o MESTRE de ofício. Quando o Brasil se 'modernizou', expulsou esse negro qualificado para chamar o imigrante branco por puro racismo científico, e não por falta de técnica.">
-            <h1>4. Desdobramentos para a Educação Profissional</h1>
-            <h2>O apagamento do saber técnico negro</h2>
-            <ul>
-                <li><strong>O Domínio do Saber-Fazer:</strong> Eram os escravizados de ganho e os libertos que dominavam as técnicas urbanas: carpintaria, alfaiataria, alvenaria, forja e mecânica.</li>
-                <li><strong>O Mito do Atraso Tecnológico:</strong> A substituição pelo europeu foi um projeto ideológico de "branqueamento" da nação, não uma carência de trabalhadores habilidosos.</li>
-                <li><strong>Origem das Escolas de Artífices:</strong> O ensino técnico brasileiro nasceu como controle social de "vadios" e "desvalidos", marginalizando a população que historicamente construiu a infraestrutura do país.</li>
-            </ul>
-        </div>
-
-        <div class="slide" data-notes="Aqui é o momento de engajar a sala. Jean, você pode jogar essas perguntas para os colegas responderem ou para as professoras complementarem. 'O que a turma acha do Mito do Italiano Radical?' Fomentem a participação!">
-            <h1>5. Discussão e Reflexão</h1>
-            <h2>Tópicos para o debate com a turma</h2>
+        <div class="slide" data-notes="[MEDIAÇÃO 2 - CONTINUAÇÃO] O outro pilar é Eric Hobsbawm. Ele alerta: parem de olhar só para os líderes sindicais. Olhem para o operário 'comum'. O jogo de várzea na porta da fábrica, o samba, os batuques... tudo isso era visto pelos teóricos antigos como 'alienação'. Hobsbawm e nossos autores mostram que ali residia a verdadeira rede de proteção e cultura da classe subalterna.">
+            <h1>4. Ampliando as Fronteiras da Classe</h1>
+            <h2>A contribuição de Eric Hobsbawm</h2>
+            <p>Hobsbawm alerta contra os perigos de focar a pesquisa apenas nas cúpulas dirigentes, partidos e discursos articulados oficiais:</p>
             <br>
-            <ol>
-                <li><span class="highlight">O Mito do Italiano Radical:</span> Como a educação básica apagou as resistências e greves negras pré-1900 (como a greve de 1857 em Salvador) para atribuir a consciência de classe apenas aos europeus?</li>
-                <li><span class="highlight">O "Bom Trabalhador" x "Vadio":</span> Como as instituições de educação profissional moldaram historicamente a imagem do trabalhador aceitável (dócil, submisso)?</li>
-                <li><span class="highlight">A "Greve Branca":</span> Como a insubordinação tática e dissimulada no chão de fábrica e na sala de aula desestabiliza o poder gerencial?</li>
+            <ul>
+                <li><strong>O Operário "Comum":</strong> A história do trabalho deve investigar os "despolitizados", as massas que não militaram a vida inteira, mas que construíram redes de proteção.</li>
+                <li><strong>Novos Espaços de Classe:</strong> Os times de futebol de várzea, as escolas de samba, os terreiros e as festas religiosas.</li>
+            </ul>
+            <p style="margin-top: 2rem;" class="highlight">Essas práticas culturais não eram meras engrenagens de alienação patronal, mas "carapaças" genuínas de sobrevivência e identidade social.</p>
+        </div>
+
+        <div class="slide" data-notes="[MEDIAÇÃO 3] Mas como os autores provam isso materialmente? Através do medo do Estado! Olhem esse exemplo do Império: homens negros tentaram aprovar o estatuto de uma sociedade de ajuda mútua. O Conselho de Dom Pedro II barrou e mandou infiltrar espiões. Por quê? Medo de uma 'classe separada'. Séculos depois, o DEOPS fez a mesma coisa com os comunistas e nordestinos em São Paulo. O controle social prova a existência da luta.">
+            <h1>5. A Materialidade Documental</h1>
+            <h2>O Pânico do Estado e a Repressão Policial</h2>
+            <p>O ensaio ancora-se em fontes documentais repressivas que comprovam o contínuo tensionamento de classes ao longo dos séculos:</p>
+            
+            <div class="vs-box">
+                <div class="vs-card">
+                    <h3 style="color: var(--cefet-blue);">Século XIX: O Império</h3>
+                    <p>Documentos do Conselho de Estado mostram a recusa aos estatutos de uma sociedade civil de <strong>"homens de cor"</strong>. D. Pedro II ordenou espionagem policial, temendo a formação de uma "classe separada" e organizada.</p>
+                </div>
+                <div class="vs-card">
+                    <h3 style="color: var(--cefet-light-blue);">Século XX: A República</h3>
+                    <p>Informes do <strong>DEOPS (1957)</strong> e do <strong>Aperj</strong> revelam o controle sobre greves da Rayon Matarazzo ("lideradas por nortistas"). Operários eram fichados usando termos da cultura popular, como "manhoso" e "maneiroso".</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-notes="[MEDIAÇÃO 4 - CONEXÃO COM A DISCIPLINA] Aqui chegamos ao cerne da nossa disciplina com as professoras. Se a historiografia tradicional diz que o Brasil criou as Escolas de Aprendizes Artífices porque faltava mão de obra qualificada, o texto de hoje destrói isso. O trabalhador negro URBANO (de ganho, aluguel) era o mestre de ofício. Ele era o ferreiro, o alfaiate, o mecânico.">
+            <h1>6. Reflexões para a Educação Profissional</h1>
+            <h2>O Apagamento do Saber Técnico Negro</h2>
+            <div class="split-slide">
+                <div>
+                    <ul>
+                        <li><strong>O Monopólio do Saber-Fazer:</strong> Diferente da visão rural, os centros urbanos imperiais (Rio, Salvador) dependiam da hipercomplexidade técnica dos escravizados de ganho e libertos (alfaiates, pedreiros, ferreiros, estivadores).</li>
+                        <li><strong>O Projeto Institucional:</strong> A criação das primeiras instituições de ensino técnico (como as Escolas de Aprendizes Artífices em 1909) não ocorreu por falta de trabalhadores manuais.</li>
+                        <li><span class="highlight">O Estigma do Ensino Técnico:</span> Nasceu como ferramenta eugênica para disciplinar "desvalidos" e marginalizar a população negra que dominava a infraestrutura, associando o trabalho manual ao crime de "vadiagem".</li>
+                    </ul>
+                </div>
+                <div class="image-panel" style="background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1000&auto=format&fit=crop');">
+                    <div class="image-caption">O ofício manual: de monopólio negro à criminalização.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-notes="[TODOS / INTERAÇÃO] Para fechar, queremos provocar a turma e abrir para as professoras. (1) Pensem na greve negra de 1857 em Salvador, que para o porto. Por que os livros de história só ensinam sobre a greve de 1917 dos italianos em São Paulo? (2) Como o CEFET hoje lida com a herança dessa dicotomia entre quem 'pensa' (trabalho intelectual) e quem 'faz' (trabalho manual)? Vamos debater!">
+            <h1>7. Tópicos para o Debate</h1>
+            <h2>Provocações para a Turma e Professoras</h2>
+            <p>Com base em nossa mediação, propomos as seguintes reflexões coletivas:</p>
+            <br>
+            <ol style="margin-left: 2rem; font-size: 1.3rem; line-height: 2;">
+                <li><span class="highlight">A Queda do "Mito do Italiano Radical":</span> Como os currículos escolares e técnicos apagam as greves negras (ex: Estivadores de Salvador, 1857) para centralizar a consciência de classe apenas na imigração europeia (1917)?</li>
+                <li><span class="highlight">O "Vadio" versus o "Bom Trabalhador":</span> De que maneira o sistema de educação tecnológica contemporâneo ainda formata currículos focados na "docilidade" fabril em detrimento da consciência emancipatória?</li>
+                <li><span class="highlight">A Resistência no Chão de Fábrica:</span> O conceito de "greve branca" (insubordinação tática e silenciosa) encontra paralelos no comportamento dos alunos dentro do atual sistema educacional?</li>
             </ol>
         </div>
 
-        <div class="slide" data-notes="Agradecimentos. Podem abrir o microfone para dúvidas ou considerações finais das professoras Irlen e Isis.">
-            <h1 style="border:none; text-align: center; width: 100%; margin-top: 20%;">Obrigado!</h1>
-            <h2 style="text-align: center;">Perguntas, contribuições ou dúvidas?</h2>
+        <div class="slide" data-notes="[FIM] Agradecemos a atenção de todos. Concluímos que a leitura de Negro e Gomes nos arma metodologicamente para ler os documentos das escolas técnicas não apenas pelo que o Estado diz, mas pelo silêncio das fontes e pelas táticas dos alunos trabalhadores. Passamos a palavra para a turma e para as professoras.">
+            <div style="text-align: center; margin-top: 10vh;">
+                <h1 style="font-size: 4rem; border: none;">A História a Contrapelo</h1>
+                <p style="font-size: 1.8rem; margin-top: 2rem; color: #555;">"A classe trabalhadora não evolui indiferente à sua própria constituição, atropelando tudo que a nega. A história social tem algo a fazer."</p>
+                <br><br>
+                <h2 style="color: var(--cefet-blue);">Obrigado pela atenção!</h2>
+                <p>Abrimos agora para as considerações de todos.</p>
+            </div>
         </div>
 
     </div>
@@ -283,21 +478,23 @@
         const btnNext = document.getElementById('btn-next');
 
         function updateSlide() {
-            // Atualiza visibilidade dos slides
             slides.forEach((slide, index) => {
-                slide.classList.remove('active');
+                slide.classList.remove('active', 'past');
+                
                 if (index === currentSlide) {
                     slide.classList.add('active');
-                    // Atualiza Notas
-                    notesContent.innerHTML = slide.getAttribute('data-notes') || "<em>Sem notas para este slide.</em>";
+                    // Injeta as notas do palestrante
+                    notesContent.innerHTML = slide.getAttribute('data-notes') || "<em>[Sem anotações para este slide]</em>";
+                } else if (index < currentSlide) {
+                    slide.classList.add('past');
                 }
             });
 
-            // Atualiza Barra de Progresso
-            const progress = ((currentSlide + 1) / slides.length) * 100;
+            // Atualiza barra de progresso
+            const progress = ((currentSlide) / (slides.length - 1)) * 100;
             progressBar.style.width = progress + '%';
 
-            // Atualiza botões
+            // Desativa botões nos extremos
             btnPrev.disabled = currentSlide === 0;
             btnNext.disabled = currentSlide === slides.length - 1;
         }
@@ -313,16 +510,18 @@
             notesPanel.classList.toggle('visible');
         }
 
-        // Navegação por teclado (Setas)
+        // Navegação por teclado
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'Space') {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'Space') {
+                e.preventDefault(); // Evita scroll ao apertar espaço
                 changeSlide(1);
-            } else if (e.key === 'ArrowLeft') {
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
                 changeSlide(-1);
             }
         });
 
-        // Inicializa
+        // Start
         updateSlide();
     </script>
 </body>
